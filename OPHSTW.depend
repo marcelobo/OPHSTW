@@ -1,0 +1,83 @@
+# depslib dependency file v1.0
+1454442901 source:d:\marcelinho\tcc-ophstw\codigo\main.cpp
+	<iostream>
+	<string>
+	<fstream>
+	<dirent.h>
+
+1454436642 d:\marcelinho\tcc-ophstw\codigo\dirent.h
+	<stdio.h>
+	<stdarg.h>
+	<windef.h>
+	<winbase.h>
+	<wchar.h>
+	<string.h>
+	<stdlib.h>
+	<malloc.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<errno.h>
+
+1454514950 source:e:\ophs\codigo\main.cpp
+	<iostream>
+	<string>
+	<fstream>
+	<stdlib.h>
+	<dirent.h>
+	<string.h>
+
+1455998098 source:c:\users\marce\desktop\ophs\codigo\main.cpp
+	<iostream>
+	<fstream>
+	<ctime>
+	<string>
+	<cstring>
+	<stdlib.h>
+	<dirent.h>
+	<algorithm>
+	<Point.h>
+	<Instance.h>
+	<Trip.h>
+	<Trip_point.h>
+
+1456000266 c:\users\marce\desktop\ophs\codigo\include\point.h
+	<string>
+
+1455484262 c:\users\marce\desktop\ophs\codigo\include\instance.h
+	<string>
+	<vector>
+	<Trip.h>
+
+1455988203 c:\users\marce\desktop\ophs\codigo\include\trip.h
+	<Trip_point.h>
+	<vector>
+
+1455391822 c:\users\marce\desktop\ophs\codigo\comoninclude.h
+	<string>
+	<vector>
+
+1456000729 c:\users\marce\desktop\ophs\codigo\include\trip_point.h
+	<point.h>
+
+1455778643 source:c:\users\marce\desktop\ophs\codigo\src\instance.cpp
+	"Instance.h"
+	<iostream>
+	<fstream>
+	<sstream>
+
+1456000943 source:c:\users\marce\desktop\ophs\codigo\src\point.cpp
+	"Point.h"
+	"Instance.h"
+	<cmath>
+
+1456001052 source:c:\users\marce\desktop\ophs\codigo\src\trip.cpp
+	"Trip.h"
+	"Instance.h"
+	<cstdlib>
+	<iostream>
+	<cmath>
+	<vector>
+
+1455987737 source:c:\users\marce\desktop\ophs\codigo\src\trip_point.cpp
+	"Trip_point.h"
+
