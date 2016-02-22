@@ -27,8 +27,10 @@ class Point
         void Setopening_time(float val) { opening_time = val; }
         float Getclosing_time() { return closing_time; }
         void Setclosing_time(float val) { closing_time = val; }
+        float Getmax_delay() { return max_delay; }
+        void Setmax_delay(float val) { max_delay = val; }
         bool operator<(const Point& poi) const;
-        bool AddPoint(Instance &inst);
+        bool InsertPoint(Instance &inst);
         float Distance(Point &p);
     protected:
 
@@ -41,6 +43,7 @@ class Point
         float service_time;
         float opening_time;
         float closing_time;
+        float max_delay;
 };
 
 #endif // POINT_H

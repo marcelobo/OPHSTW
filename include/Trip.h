@@ -7,6 +7,7 @@ class Instance;
 
 class Trip
 {
+    friend bool Point::InsertPoint(Instance &inst);
     public:
         Trip();
         virtual ~Trip();

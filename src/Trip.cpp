@@ -45,7 +45,7 @@ void Trip::Generate_trip(Instance &inst, std::vector<Point> &sorted_points, std:
                 if(length + dist_previous < sorted_points.at(j).Getopening_time()) length = sorted_points.at(j).Getopening_time();
                 else length += dist_previous;
 
-                this->points.push_back(Trip_point(sorted_points.at(j).Getid(), length, sorted_points.at(j).Getclosing_time() - sorted_points.at(j).Getservice_time(), inst.trip_length[num_trip] - length));
+                this->points.push_back(Trip_point(sorted_points.at(j).Getid(), length, inst.trip_length[num_trip] - length));
                 length += sorted_points.at(j).Getservice_time();
                 if(this->points.size() == 1)//First POI (must update start hotel)
                     this->start_hotel.Setfree_time(this->points.back().Getarriving_time() - (this->start_hotel.Getarriving_time() + inst.hotels.at(this->start_hotel.Getpoint_id()).Getservice_time() ));

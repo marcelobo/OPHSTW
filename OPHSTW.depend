@@ -26,7 +26,7 @@
 	<dirent.h>
 	<string.h>
 
-1455998098 source:c:\users\marce\desktop\ophs\codigo\main.cpp
+1456100112 source:c:\users\marce\desktop\ophs\codigo\main.cpp
 	<iostream>
 	<fstream>
 	<ctime>
@@ -40,15 +40,15 @@
 	<Trip.h>
 	<Trip_point.h>
 
-1456000266 c:\users\marce\desktop\ophs\codigo\include\point.h
+1456094742 c:\users\marce\desktop\ophs\codigo\include\point.h
 	<string>
 
-1455484262 c:\users\marce\desktop\ophs\codigo\include\instance.h
+1455480662 c:\users\marce\desktop\ophs\codigo\include\instance.h
 	<string>
 	<vector>
 	<Trip.h>
 
-1455988203 c:\users\marce\desktop\ophs\codigo\include\trip.h
+1456100100 c:\users\marce\desktop\ophs\codigo\include\trip.h
 	<Trip_point.h>
 	<vector>
 
@@ -56,21 +56,22 @@
 	<string>
 	<vector>
 
-1456000729 c:\users\marce\desktop\ophs\codigo\include\trip_point.h
+1456094839 c:\users\marce\desktop\ophs\codigo\include\trip_point.h
 	<point.h>
 
-1455778643 source:c:\users\marce\desktop\ophs\codigo\src\instance.cpp
+1455775043 source:c:\users\marce\desktop\ophs\codigo\src\instance.cpp
 	"Instance.h"
 	<iostream>
 	<fstream>
 	<sstream>
 
-1456000943 source:c:\users\marce\desktop\ophs\codigo\src\point.cpp
+1456099934 source:c:\users\marce\desktop\ophs\codigo\src\point.cpp
 	"Point.h"
 	"Instance.h"
 	<cmath>
+	<iostream>
 
-1456001052 source:c:\users\marce\desktop\ophs\codigo\src\trip.cpp
+1455999878 source:c:\users\marce\desktop\ophs\codigo\src\trip.cpp
 	"Trip.h"
 	"Instance.h"
 	<cstdlib>
@@ -78,6 +79,6 @@
 	<cmath>
 	<vector>
 
-1455987737 source:c:\users\marce\desktop\ophs\codigo\src\trip_point.cpp
+1455999662 source:c:\users\marce\desktop\ophs\codigo\src\trip_point.cpp
 	"Trip_point.h"
 

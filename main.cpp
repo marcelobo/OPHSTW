@@ -56,22 +56,22 @@ int main(int argc, char *argv[]) {
 
                 Trip_point tp_aux;
                 //Add the start hotel as the start hotel of the first trip
-                tp_aux = Trip_point(0, 0, 0, instance.trip_length[0] - instance.hotels[0].Getservice_time());
+                tp_aux = Trip_point(0, 0, instance.trip_length[0] - instance.hotels[0].Getservice_time());
                 instance.trips[0].Setstart_hotel(tp_aux);
 
                  //Add the end hotel as the end hotel of the last trip
-                tp_aux = Trip_point(1, instance.trip_length.back() - instance.hotels[1].Getservice_time(), 0.0, 0.0);
+                tp_aux = Trip_point(1, instance.trip_length.back() - instance.hotels[1].Getservice_time(), 0);
                 instance.trips.back().Setend_hotel(tp_aux);
 
                 //Hotels random selection
                 int num_hotel = 0;
-                for(int i = 1; i <= instance.num_trips; i++){
+                for(i = 1; i <= instance.num_trips; i++){
                     num_hotel = rand() % instance.num_hotels;
                     //set end hotel from previous trip
-                    instance.trips[i - 1].Setend_hotel(Trip_point(num_hotel, instance.trip_length[i - 1] - instance.hotels[num_hotel].Getservice_time(), 0.0, 0.0));
+                    instance.trips[i - 1].Setend_hotel(Trip_point(num_hotel, instance.trip_length[i - 1] - instance.hotels[num_hotel].Getservice_time(), 0));
                     //set start hotel from current trip
                     //this must be the same where finishes the previous trip
-                    instance.trips[i].Setstart_hotel(Trip_point(num_hotel, 0.0, 0.0, instance.trip_length[i] - instance.hotels[num_hotel].Getservice_time()));
+                    instance.trips[i].Setstart_hotel(Trip_point(num_hotel, 0.0, instance.trip_length[i] - instance.hotels[num_hotel].Getservice_time()));
                 }
 
                 //Sorting POI's list
@@ -91,26 +91,32 @@ int main(int argc, char *argv[]) {
                     it->Generate_trip(instance, sorted_points, visited_points, i);
 
 
-                for(int i = 0; i < instance.num_trips; i++){
+                for(i = 0; i < instance.num_trips; i++){
                     cout << "--------- Trip #" << i << " ---------" << endl;
                     instance.trips[i].Print_trip(instance);
                     cout << endl << endl;
                 }
 
-                for(int i = 0; i < visited_points.size(); i++){
-                    if(!visited_points.at(i)){
-                        sorted_points.at(i).AddPoint(instance);
-                    }
-                }
-
                 //Print not visited points
                 cout << " -------------- Not visited POI -------------- " << endl;
-                for(int i = 0; i < visited_points.size(); i++){
+                for(i = 0; i < visited_points.size(); i++){
                     if(!visited_points.at(i)){
                         cout << sorted_points.at(i).Getname() << endl;
                     }
                 }
 
+                for(i = 0; i < visited_points.size(); i++){
+                    if(!visited_points.at(i)){
+                        if(sorted_points.at(i).InsertPoint(instance))
+                            visited_points.at(i) = true;
+                    }
+                }
+
+                 for(i = 0; i < instance.num_trips; i++){
+                    cout << "--------- Trip #" << i << " ---------" << endl;
+                    instance.trips[i].Print_trip(instance);
+                    cout << endl << endl;
+                }
             }
             ent = readdir(dir);
         }
