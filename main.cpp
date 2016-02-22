@@ -74,6 +74,12 @@ int main(int argc, char *argv[]) {
                     instance.trips[i].Setstart_hotel(Trip_point(num_hotel, 0.0, instance.trip_length[i] - instance.hotels[num_hotel].Getservice_time()));
                 }
 
+                for(i = 0; i < instance.num_trips; i++){
+                    cout << "--------- Trip #" << i << " ---------" << endl;
+                    instance.trips[i].Print_trip(instance);
+                    cout << endl << endl;
+                }
+
                 //Sorting POI's list
                 vector<Point> sorted_points(instance.poi);
                 sort(sorted_points.begin(),sorted_points.end());
@@ -86,10 +92,20 @@ int main(int argc, char *argv[]) {
                 }*/
                 std::vector<bool> visited_points(instance.num_vertices, false);
 
+                /**
                 i = 0;
                 for(vector<Trip>::iterator it = instance.trips.begin(); it != instance.trips.end(); it++, i++)
                     it->Generate_trip(instance, sorted_points, visited_points, i);
+                */
 
+                //Construtivo paralelo
+                for(vector<Point>::iterator it = sorted_points.begin(); it != sorted_points.end(); it++, i++){
+                    cout << "Tenta " << it->Getname() << endl;
+                    if(it->InsertPoint(instance)){
+                        visited_points.at(i) = true;
+                        cout << "Inserted " << instance.poi.at(it->Getid()).Getname() << endl;
+                    }
+                }
 
                 for(i = 0; i < instance.num_trips; i++){
                     cout << "--------- Trip #" << i << " ---------" << endl;

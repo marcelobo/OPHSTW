@@ -85,6 +85,7 @@ void Instance::Print_POI(){
         std::cout << "\t Y: " << poi.at(i).Gety() << std::endl;
         std::cout << "\t Score: " << poi.at(i).Getscore() << std::endl;
         std::cout << "\t Service time: " << poi.at(i).Getservice_time() << std::endl;
+         std::cout << "\t Maximum delay: " << poi.at(i).Getmax_delay() << std::endl;
         std::cout << "\t Opening time: " << poi.at(i).Getopening_time() << std::endl;
         std::cout << "\t Closing time: " << poi.at(i).Getclosing_time() << std::endl;
     }
