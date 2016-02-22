@@ -1,8 +1,10 @@
 #ifndef POINT_H
 #define POINT_H
 #include <string>
+#include <vector>
 
 class Instance;
+class Trip_point;
 
 class Point
 {
@@ -32,6 +34,7 @@ class Point
         bool operator<(const Point& poi) const;
         bool InsertPoint(Instance &inst);
         float Distance(Point &p);
+        bool Can_insert(std::vector<Point> &inst_poi, std::vector<Trip_point>::iterator &curr_trip_point, float remaining_time);
     protected:
 
     private:

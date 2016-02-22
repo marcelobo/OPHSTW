@@ -77,7 +77,7 @@ void Trip::Print_trip(Instance inst){
     //Print POI
     int i = 0;
     for(std::vector<Trip_point>::iterator it = this->points.begin(); it != points.end(); it++, i++) {
-        std::cout << "POI " << i << std::endl;
+        std::cout << "POI " << i + 1 << std::endl;
         std::cout << "\t Name: " << inst.poi[it->Getpoint_id()].Getname() << std::endl;
         std::cout << "\t Start time: " << it->Getarriving_time() << std::endl;
         std::cout << "\t Free time: " << it->Getfree_time() << std::endl;

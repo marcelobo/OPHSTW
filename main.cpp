@@ -107,8 +107,10 @@ int main(int argc, char *argv[]) {
 
                 for(i = 0; i < visited_points.size(); i++){
                     if(!visited_points.at(i)){
-                        if(sorted_points.at(i).InsertPoint(instance))
+                        if(sorted_points.at(i).InsertPoint(instance)){
                             visited_points.at(i) = true;
+                            cout << "Inserted " << instance.poi.at(sorted_points.at(i).Getid()).Getname() << endl;
+                        }
                     }
                 }
 
