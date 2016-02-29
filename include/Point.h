@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-class Instance;
+
 class Trip_point;
 
 class Point
@@ -32,9 +32,7 @@ class Point
         float Getmax_delay() { return max_delay; }
         void Setmax_delay(float val) { max_delay = val; }
         bool operator<(const Point& poi) const;
-        bool InsertPoint(Instance &inst);
         float Distance(Point &p);
-        bool Can_insert(std::vector<Point> &inst_poi, std::vector<Trip_point>::iterator &curr_trip_point, float remaining_time);
     protected:
 
     private:

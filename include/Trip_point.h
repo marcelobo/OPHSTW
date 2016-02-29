@@ -17,7 +17,6 @@ class Trip_point
         void Setarriving_time(float val) { arriving_time = val; }
         float Getfree_time() { return free_time; }
         void Setfree_time(float val) { free_time = val; }
-
     protected:
 
     private:

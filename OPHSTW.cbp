@@ -39,12 +39,12 @@
 		</Unit>
 		<Unit filename="include/Instance.h" />
 		<Unit filename="include/Point.h" />
-		<Unit filename="include/Trip.h" />
+		<Unit filename="include/Tour.h" />
 		<Unit filename="include/Trip_point.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/Instance.cpp" />
 		<Unit filename="src/Point.cpp" />
-		<Unit filename="src/Trip.cpp" />
+		<Unit filename="src/Tour.cpp" />
 		<Unit filename="src/Trip_point.cpp" />
 		<Extensions>
 			<code_completion />

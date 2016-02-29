@@ -2,7 +2,8 @@
 #define INSTANCE_H
 #include <string>
 #include <vector>
-#include <Trip.h>
+
+class Point;
 
 class Instance
 {
@@ -17,7 +18,6 @@ class Instance
         std::vector<Point> hotels;
         std::vector<Point> poi;
         std::vector<float> trip_length;
-        std::vector<Trip> trips;
 
         //function
         Instance();
