@@ -97,7 +97,7 @@ void Tour::Initialize_tour(int num_trips){
         else arriving_time = previous_tp->Getarriving_time() + inst.poi.at(best_position - 1).Getservice_time() + insert_point.Distance(inst.poi.at(previous_tp->Getpoint_id()));
         if(arriving_time < insert_point.Getopening_time()) arriving_time = insert_point.Getopening_time();
         this->tp_list.at(best_trip).insert(tp_list.at(best_trip).begin() + best_position,
-                Trip_point(point_id, arriving_time, previous_tp->Getfree_time() - (arriving_time + insert_point.Getservice_time())));
+                Trip_point(point_id, arriving_time, next_tp->Getarriving_time() - (arriving_time + insert_point.Getservice_time())));
         if(best_position == 0) previous_tp->Setfree_time(arriving_time - (previous_tp->Getarriving_time() + inst.hotels.at(previous_tp->Getpoint_id()).Getservice_time()));
         else this->tp_list.at(best_trip).at(best_position - 1).Setfree_time(arriving_time - (previous_tp->Getarriving_time() + inst.poi.at(previous_tp->Getpoint_id()).Getservice_time()));
         this->trip_score.at(best_trip) += inst.poi.at(point_id).Getscore();
@@ -139,6 +139,8 @@ bool Tour::Can_insert(std::vector<Point> inst_poi, std::vector<Trip_point> &curr
 void Tour::Print_tour(Instance inst){
     for(int i = 0; i < inst.num_trips; i++){
         std::cout << " ---------- Trip #" << i + 1 << " ---------- " << std::endl;
+        std::cout << "Current length: " << this->Gettrip_length(i) << endl;
+        std::cout << "Current score: " << this->Gettrip_score(i) << endl;
 
         //Print start hotel
         std::cout << "Start hotel: " << inst.hotels[this->hotel_list.at(i).Getpoint_id()].Getname() << std::endl;
