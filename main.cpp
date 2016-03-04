@@ -56,27 +56,8 @@ int main(int argc, char *argv[]) {
                 }
 
                 solution.Initialize_tour(instance.num_trips);
-                //Add the start hotel as the start hotel of the first trip
-                tp_aux = Trip_point(0, 0, instance.trip_length[0] - instance.hotels[0].Getservice_time());
-                solution.Setstart_hotel(tp_aux, 0);
-
-                //Hotels random selection
-                int num_hotel = 0;
-                for(i = 1; i < instance.num_trips; i++){
-                    num_hotel = rand() % instance.num_hotels;
-                    //set end hotel from previous trip
-                    solution.Setend_hotel(Trip_point(num_hotel, instance.trip_length[i] - instance.hotels[num_hotel].Getservice_time(), 0.0), i - 1);
-                    //set start hotel from current trip
-                    solution.Setstart_hotel(Trip_point(num_hotel, 0.0, instance.trip_length[i] - instance.hotels[num_hotel].Getservice_time()), i);
-                    //Update trip length for previous trip
-                    solution.Settrip_length(i - 1, instance.hotels.at(solution.Getstart_hotel(i - 1).Getpoint_id()).Distance(instance.hotels.at(solution.Getend_hotel(i - 1).Getpoint_id())));
-                }
-
-                //Add the end hotel as the end hotel of the last trip
-                tp_aux = Trip_point(1, instance.trip_length.back() - instance.hotels[1].Getservice_time(), 0);
-                solution.Setend_hotel(tp_aux, instance.num_trips - 1);
-                solution.Settrip_length(instance.num_trips - 1, instance.hotels.at(solution.Getstart_hotel(instance.num_trips - 1).Getpoint_id()).Distance(instance.hotels.at(tp_aux.Getpoint_id())));
-
+                solution.Initialize_hotels(instance.hotels, instance.trip_length);
+                solution.Print_tour(instance);
                 //Sorting POI's list
                 vector<Point> sorted_points(instance.poi);
                 sort(sorted_points.begin(),sorted_points.end());
