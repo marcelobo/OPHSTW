@@ -66,7 +66,9 @@ int main(int argc, char *argv[]) {
                 i = 0;
                 //Try to insert all POI's in solution
                 for(vector<Point>::iterator it = sorted_points.begin(); it != sorted_points.end(); it++, i++){
-                    if(solution.Insert_point(instance, it->Getid())) visited_points.at(i) = true;
+                    if(solution.Insert_point(instance, it->Getid())){
+                            visited_points.at(i) = true;
+                    }
 
                 }
 
