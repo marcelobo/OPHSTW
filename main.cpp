@@ -43,12 +43,12 @@ int main(int argc, char *argv[]) {
                 time_start = clock();
                 cout << "Instance " << ent->d_name << endl;
                 instance.Get_data_file(ent->d_name);
-                time_end = clock();
+
                 //print instance
                 if(print_instance_header){
                     instance.Print_data();
                     instance.Print_trip_lengths();
-                    cout << "Tempo Leitura instancia: " << time_end - time_start /CLOCKS_PER_SEC << "ms" << endl;
+                    //cout << "Tempo Leitura instancia: " << time_end - time_start /CLOCKS_PER_SEC << "ms" << endl;
                 }
                 if(print_instance_points){
                     instance.Print_hotels();
@@ -57,24 +57,29 @@ int main(int argc, char *argv[]) {
 
                 solution.Initialize_tour(instance.num_trips);
                 solution.Initialize_hotels(instance.hotels, instance.trip_length);
-                solution.Print_tour(instance);
+
                 //Sorting POI's list
                 vector<Point> sorted_points(instance.poi);
                 sort(sorted_points.begin(),sorted_points.end());
-                std::vector<bool> visited_points(instance.num_vertices, false);
+                vector<bool> visited_points(instance.num_vertices, false);
 
                 i = 0;
                 //Try to insert all POI's in solution
                 for(vector<Point>::iterator it = sorted_points.begin(); it != sorted_points.end(); it++, i++){
-                    if(solution.Insert_point(instance, it->Getid())){
-                        visited_points.at(i) = true;
-                        solution.Print_tour(instance);
-                    }
+                    if(solution.Insert_point(instance, it->Getid())) visited_points.at(i) = true;
+
                 }
 
-                cout << "Insert Finished" << endl;
                 solution.Print_tour(instance);
-                cout << " ------------------------------ " << endl << endl;
+                time_end = clock();
+                cout << "Tempo total instancia: " << time_end - time_start /CLOCKS_PER_SEC << "ms" << endl;
+                cout << "------------ POI not visited ---------------- " << endl;
+                i = 0;
+                for(vector<bool>::iterator itv = visited_points.begin(); itv != visited_points.end(); itv++, i++){
+                    if(!(*itv)){
+                        cout << sorted_points.at(i).Getname() << endl;
+                    }
+                }
             }
             ent = readdir(dir);
         }
