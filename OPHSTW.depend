@@ -56,7 +56,7 @@
 	<string>
 	<vector>
 
-1456526226 c:\users\marce\desktop\ophs\codigo\include\trip_point.h
+1457569374 c:\users\marce\desktop\ophs\codigo\include\trip_point.h
 	<point.h>
 
 1457350427 source:c:\users\marce\desktop\ophs\codigo\src\instance.cpp
@@ -82,14 +82,14 @@
 	<cmath>
 	<vector>
 
-1455999662 source:c:\users\marce\desktop\ophs\codigo\src\trip_point.cpp
+1457569380 source:c:\users\marce\desktop\ophs\codigo\src\trip_point.cpp
 	"Trip_point.h"
 
 1457351413 c:\users\marce\desktop\ophs\codigo\include\tour.h
 	<Trip_point.h>
 	<vector>
 
-1457353292 source:c:\users\marce\desktop\ophs\codigo\src\tour.cpp
+1457572182 source:c:\users\marce\desktop\ophs\codigo\src\tour.cpp
 	"Tour.h"
 	"Instance.h"
 	<cstdlib>

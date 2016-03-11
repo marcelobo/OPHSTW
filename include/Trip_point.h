@@ -15,14 +15,14 @@ class Trip_point
         void Setpoint_id(int val) { point_id = val; }
         float Getarriving_time() { return arriving_time; }
         void Setarriving_time(float val) { arriving_time = val; }
-        float Getfree_time() { return free_time; }
-        void Setfree_time(float val) { free_time = val; }
+        float Getidle_time() { return idle_time; }
+        void Setidle_time(float val) { idle_time = val; }
     protected:
 
     private:
         int point_id;
         float arriving_time;
-        float free_time;
+        float idle_time;
 };
 
 #endif // TRIP_POINT_H
