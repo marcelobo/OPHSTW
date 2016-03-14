@@ -55,6 +55,9 @@ void Tour::Initialize_hotels(std::vector<Point> &hotels, std::vector<float> &len
 
     // for every trip
     for(std::vector<std::vector<Trip_point> >::iterator it = this->trip.begin(); it != this->trip.end(); it++, num_trip++){
+        if(insert_point.Getname() == "C17" && num_trip == 1){
+            std::cout << "COmeco insert" << std::endl;
+        }
         tp_pos = 0;
         //for every point in the trip
         for(std::vector<Trip_point>::iterator itp = it->begin(); itp != it->end() - 1; itp++, tp_pos++){
@@ -97,8 +100,8 @@ void Tour::Initialize_hotels(std::vector<Point> &hotels, std::vector<float> &len
 
         arriving_time = previous_tp->Getarriving_time() + prev.Getservice_time() + insert_point.Distance(prev);
         if(arriving_time < insert_point.Getopening_time()) arriving_time = insert_point.Getopening_time();
-        previous_tp->Setidle_time(arriving_time - (previous_tp->Getarriving_time() + prev.Getservice_time()));
         this->Insert_with_delay(inst, this->trip.at(best_trip), best_position + 1, arriving_time + insert_point.Getservice_time() + insert_point.Distance(next)  - previous_tp->Getidle_time(), true);
+        previous_tp->Setidle_time(arriving_time - (previous_tp->Getarriving_time() + prev.Getservice_time()));
         this->trip.at(best_trip).insert(trip.at(best_trip).begin() + best_position + 1,
                 Trip_point(point_id, arriving_time, next_tp->Getarriving_time() - (arriving_time + insert_point.Getservice_time())));
         this->trip_score.at(best_trip) += inst.poi.at(point_id).Getscore();
@@ -115,30 +118,36 @@ bool Tour::Insert_with_delay(Instance &inst, std::vector<Trip_point> &curr_trip,
     bool can_delay = false;
 
     if(tp_pos < trip_aux.size() - 1){
-        if(tp_pos + 1 == trip_aux.size()) next = inst.hotels.at(trip_aux.at(tp_pos + 1).Getpoint_id());
-        else next = inst.poi.at(trip_aux.at(tp_pos + 1).Getpoint_id());
+        if(tp_pos + 2 == trip_aux.size()){
+            next = inst.hotels.at(trip_aux.at(tp_pos + 1).Getpoint_id());
+
+        }else next = inst.poi.at(trip_aux.at(tp_pos + 1).Getpoint_id());
         Trip_point curr_pt = trip_aux.at(tp_pos);
         //If current POI visit can be delayed
         if(trip_aux.at(tp_pos).Getarriving_time() + remaining_time <= curr.Getmax_delay() ){
-            curr_idletime = trip_aux.at(tp_pos).Getidle_time() - curr.Distance(next);
-            if(curr_idletime > 0 ){
-                if(curr_idletime >= remaining_time + inst.poi.at(trip_aux.at(tp_pos).Getpoint_id()).Distance(next) ){
-                    trip_aux.at(tp_pos).Setarriving_time(trip_aux.at(tp_pos).Getarriving_time() + remaining_time + inst.poi.at(trip_aux.at(tp_pos).Getpoint_id()).Distance(next));
-                    trip_aux.at(tp_pos).Setidle_time(curr_idletime - remaining_time);
-                    can_delay = true;
-                }else{
-                    if(this->Insert_with_delay(inst, trip_aux, tp_pos + 1 , remaining_time - trip_aux.at(tp_pos).Getidle_time(), can_update)){
+            /**Teste que verifica se extrapola horario limite da trip
+            if(curr_pt.Getarriving_time() + remaining_time + curr.Getservice_time() + curr.Distance(next) < curr_trip.back().Getarriving_time()){
+            */
+                curr_idletime = trip_aux.at(tp_pos).Getidle_time() - curr.Distance(next);
+                if(curr_idletime > 0 ){
+                    if(curr_idletime >= remaining_time){
                         trip_aux.at(tp_pos).Setarriving_time(trip_aux.at(tp_pos).Getarriving_time() + remaining_time);
-                        trip_aux.at(tp_pos).Setidle_time(0);
+                        trip_aux.at(tp_pos).Setidle_time(curr.Distance(next) + curr_idletime - remaining_time);
+                        can_delay = true;
+                    }else{
+                        if(this->Insert_with_delay(inst, trip_aux, tp_pos + 1 , remaining_time - curr_idletime, can_update)){
+                            trip_aux.at(tp_pos).Setarriving_time(trip_aux.at(tp_pos).Getarriving_time() + remaining_time);
+                            trip_aux.at(tp_pos).Setidle_time(curr.Distance(next));
+                            can_delay = true;
+                        }
+                    }
+                }else{
+                    if(this->Insert_with_delay(inst, trip_aux, tp_pos + 1, remaining_time, can_update)){
+                        trip_aux.at(tp_pos).Setarriving_time(trip_aux.at(tp_pos).Getarriving_time() + remaining_time);
                         can_delay = true;
                     }
                 }
-            }else{
-                if(this->Insert_with_delay(inst, trip_aux, tp_pos + 1, remaining_time, can_update)){
-                    trip_aux.at(tp_pos).Setarriving_time(trip_aux.at(tp_pos).Getarriving_time() + remaining_time);
-                    can_delay = true;
-                }
-            }
+            //}
         }
     }
     if(can_delay){
@@ -204,7 +213,40 @@ bool Tour::Is_best_insert_position(Instance &inst, int num_trip, int prev_pos, i
     return false;
  }
 
-void Tour::Print_tour(Instance inst){
+ bool Tour::Validate_tour(Instance &inst){
+    int num_trip = 0;
+    Point curr, next;
+    std::cout << "------------ Validation ---------------- " << std::endl;
+    for(std::vector<std::vector<Trip_point> >::iterator it = this->trip.begin(); it != this->trip.end(); it++, num_trip++){
+        if(this->Gettrip_length(num_trip) > inst.trip_length.at(num_trip)){
+            std::cout << "Excedido tamanho maximo da trip: " << num_trip << std::endl;
+        }
+        for(std::vector<Trip_point>::iterator itp = it->begin(); itp != it->end() - 1; itp++){
+            if(itp == it->begin()) curr = inst.hotels.at(itp->Getpoint_id());
+            else curr = inst.poi.at(itp->Getpoint_id());
+            if(itp + 2 == it->end()) next = inst.hotels.at( (itp+1)->Getpoint_id());
+            else next = inst.poi.at( (itp+1)->Getpoint_id());
+            if(itp->Getarriving_time() < curr.Getopening_time() || itp->Getarriving_time() > curr.Getmax_delay()){
+                std::cout << "Horario de chegada fora do limite: " << curr.Getname() << std::endl;
+                std::cout << "\tChegada: " << itp->Getarriving_time() << std::endl;
+                std::cout << "\tAbertura: " << curr.Getopening_time() << std::endl;
+                std::cout << "\tHorario maximo: " << curr.Getmax_delay() << std::endl;
+                //return false;
+            }
+            //If not penultimate point
+            if(curr.Distance(next) > itp->Getidle_time()){
+                std::cout << "Distancia entre pontos maior que Idle time: " << curr.Getname() << " -> " << next.Getname() << std::endl;
+                std::cout << "\tDistancia: " << curr.Distance(next) << std::endl;
+                std::cout << "\tIdle time: " << itp->Getidle_time() << std::endl;
+            }
+
+
+
+        }
+    }
+ }
+
+void Tour::Print_tour(Instance &inst){
     float total_length = 0, total_score = 0, total_idle_time = 0;
     for(int i = 0; i < inst.num_trips; i++){
         total_length += this->Gettrip_length(i);

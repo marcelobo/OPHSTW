@@ -25,7 +25,8 @@ class Tour
         bool Insert_with_delay(Instance &inst, std::vector<Trip_point> &curr_trip, int tp_pos, float remaining_time, bool can_update);
         float Calculate_trip_length(int num_trip, Instance &inst);
         bool Is_best_insert_position(Instance &inst, int num_trip, int prev_pos, int insert_id, int type, float *best_cost);
-        void Print_tour(Instance inst);
+        void Print_tour(Instance &inst);
+        bool Validate_tour(Instance &inst);
     protected:
 
     private:
