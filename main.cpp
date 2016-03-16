@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
                 for(vector<Point>::iterator it = sorted_points.begin(); it != sorted_points.end(); it++, i++){
                     if(solution.Insert_point(instance, it->Getid())){
                             visited_points.at(i) = true;
-                            solution.Print_tour(instance);
+                            //solution.Print_tour(instance);
                     }
 
                 }

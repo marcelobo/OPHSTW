@@ -8,6 +8,7 @@ class Instance;
 class Tour
 {
     public:
+        static const float epsilon = 0.0001;
         Tour();
         virtual ~Tour();
         float Gettrip_length(int num_trip) { return trip_length.at(num_trip); }
