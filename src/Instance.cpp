@@ -35,7 +35,7 @@ void Instance::Get_data_file(std::string name){
             switch(file_line_position){//get a line from file, convert to an int and put on correct variable
                 case 1://get vertices, extra hotels and trips
                     iss >> num_vertices >> num_hotels >> num_trips;
-                    num_vertices -= 2;
+                    num_vertices -= 1;
                     num_hotels += 2;
                     poi.reserve(num_vertices);
                     hotels.reserve(num_hotels + 2);
@@ -97,12 +97,12 @@ void Instance::Get_data_file(std::string name){
 }
 
 void Instance::Print_data(){
-    std::cout << "Vertices: " << Instance::num_vertices << "\t Hotels: " << Instance::num_hotels <<
-            "\t Trips: " << Instance::num_trips << "\t Tour length: " << Instance::tour_length << std::endl;
+    std::cout << "Vertices: " << this->num_vertices << "\t Hotels: " << this->num_hotels <<
+            "\t Trips: " << this->num_trips << "\t Tour length: " << this->tour_length << std::endl;
 }
 
 void Instance::Print_POI(){
-    for(int i = 0; i < Instance::num_vertices; i++){
+    for(int i = 0; i < this->num_vertices; i++){
         std::cout << "POI " << i + 1 << ": \n";
         std::cout << "\t ID: " << poi.at(i).Getid() << std::endl;
         std::cout << "\t Name: " << poi.at(i).Getname() << std::endl;
@@ -118,7 +118,7 @@ void Instance::Print_POI(){
 }
 
 void Instance::Print_hotels(){
-    for(int i = 0; i < Instance::num_hotels; i++){
+    for(int i = 0; i < this->num_hotels; i++){
         std::cout << "Hotel " << i + 1 << ": \n";
         std::cout << "\t ID: " << hotels.at(i).Getid() << std::endl;
         std::cout << "\t Name: " << hotels.at(i).Getname() << std::endl;

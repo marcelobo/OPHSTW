@@ -34,9 +34,6 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="dirent.h">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
 		<Unit filename="include/Instance.h" />
 		<Unit filename="include/Point.h" />
 		<Unit filename="include/Tour.h" />

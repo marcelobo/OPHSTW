@@ -1,0 +1,223 @@
+ ---------- Trip #1 ---------- 
+Current length: 24.821
+Current free time: 1.7331
+Current score: 59
+Start hotel: H0
+	 Start time: 0
+	 Distance next: 7.62515
+	 Idle time: 0
+POI 1
+	 Name: C82
+	 Start time: 7.62515
+	 Distance next: 0.44
+	 Idle time: 0
+POI 2
+	 Name: C30
+	 Start time: 8.06515
+	 Distance next: 2.67884
+	 Idle time: 0
+POI 3
+	 Name: C43
+	 Start time: 10.744
+	 Distance next: 14.077
+	 Idle time: 1.7331
+End hotel: H13
+ ---------- Trip #2 ---------- 
+Current length: 26.6684
+Current free time: 3.55503
+Current score: 56
+Start hotel: H13
+	 Start time: 0
+	 Distance next: 5.06616
+	 Idle time: 0
+POI 1
+	 Name: C23
+	 Start time: 5.06616
+	 Distance next: 0.840952
+	 Idle time: -5.96046e-008
+POI 2
+	 Name: C81
+	 Start time: 5.90711
+	 Distance next: 13.9278
+	 Idle time: 0
+POI 3
+	 Name: C78
+	 Start time: 19.8349
+	 Distance next: 6.83345
+	 Idle time: 3.55504
+End hotel: H6
+ ---------- Trip #3 ---------- 
+Current length: 20.0859
+Current free time: 4.04715
+Current score: 79
+Start hotel: H6
+	 Start time: 0
+	 Distance next: 3.07085
+	 Idle time: 0
+POI 1
+	 Name: C65
+	 Start time: 3.07085
+	 Distance next: 9.86283
+	 Idle time: 0
+POI 2
+	 Name: C4
+	 Start time: 12.9337
+	 Distance next: 0.708378
+	 Idle time: 3.07085
+POI 3
+	 Name: C51
+	 Start time: 16.7129
+	 Distance next: 3.37295
+	 Idle time: 4.04715
+End hotel: H14
+ ---------- Trip #4 ---------- 
+Current length: 17.3923
+Current free time: 6.48593
+Current score: 49
+Start hotel: H14
+	 Start time: 0
+	 Distance next: 3.01664
+	 Idle time: 0
+POI 1
+	 Name: C97
+	 Start time: 3.01664
+	 Distance next: 12.2885
+	 Idle time: 0
+POI 2
+	 Name: C64
+	 Start time: 15.3052
+	 Distance next: 2.0871
+	 Idle time: 6.48593
+End hotel: H12
+ ---------- Trip #5 ---------- 
+Current length: 18.2398
+Current free time: 8.891
+Current score: 31
+Start hotel: H12
+	 Start time: 0
+	 Distance next: 5.25461
+	 Idle time: 0
+POI 1
+	 Name: C95
+	 Start time: 5.25461
+	 Distance next: 1.30173
+	 Idle time: -2.38419e-007
+POI 2
+	 Name: C19
+	 Start time: 6.55634
+	 Distance next: 11.6835
+	 Idle time: 8.891
+End hotel: H16
+ ---------- Trip #6 ---------- 
+Current length: 16.5332
+Current free time: 9.15312
+Current score: 42
+Start hotel: H16
+	 Start time: 0
+	 Distance next: 10.7552
+	 Idle time: 0
+POI 1
+	 Name: C79
+	 Start time: 10.7552
+	 Distance next: 0.576975
+	 Idle time: -4.17233e-007
+POI 2
+	 Name: C25
+	 Start time: 11.3322
+	 Distance next: 5.20096
+	 Idle time: 9.15312
+End hotel: H10
+ ---------- Trip #7 ---------- 
+Current length: 24.631
+Current free time: 0.477406
+Current score: 30
+Start hotel: H10
+	 Start time: 0
+	 Distance next: 9.01441
+	 Idle time: 0
+POI 1
+	 Name: C76
+	 Start time: 9.01441
+	 Distance next: 2.272
+	 Idle time: 2.38419e-007
+POI 2
+	 Name: C18
+	 Start time: 11.2864
+	 Distance next: 13.3446
+	 Idle time: 0.477406
+End hotel: H15
+ ---------- Trip #8 ---------- 
+Current length: 26.7305
+Current free time: 0.305578
+Current score: 95
+Start hotel: H15
+	 Start time: 0
+	 Distance next: 6.43743
+	 Idle time: 0
+POI 1
+	 Name: C11
+	 Start time: 6.43743
+	 Distance next: 11.7401
+	 Idle time: 9.53674e-007
+POI 2
+	 Name: C24
+	 Start time: 18.1776
+	 Distance next: 2.34412
+	 Idle time: 0
+POI 3
+	 Name: C8
+	 Start time: 20.5217
+	 Distance next: 2.7013
+	 Idle time: 0
+POI 4
+	 Name: C15
+	 Start time: 23.223
+	 Distance next: 3.50754
+	 Idle time: 0.305578
+End hotel: H0
+ ---------- Trip #9 ---------- 
+Current length: 20.9249
+Current free time: 3.31205
+Current score: 57
+Start hotel: H0
+	 Start time: 0
+	 Distance next: 3.24094
+	 Idle time: 0
+POI 1
+	 Name: C67
+	 Start time: 3.24094
+	 Distance next: 1.88481
+	 Idle time: -1.19209e-007
+POI 2
+	 Name: C42
+	 Start time: 5.12575
+	 Distance next: 9.49371
+	 Idle time: 0
+POI 3
+	 Name: C59
+	 Start time: 14.6195
+	 Distance next: 3.51336
+	 Idle time: -2.38419e-007
+POI 4
+	 Name: C55
+	 Start time: 18.1328
+	 Distance next: 2.79213
+	 Idle time: 3.31205
+End hotel: H6
+ ---------- Trip #10 ---------- 
+Current length: 26.181
+Current free time: -21.5974
+Current score: 0
+Start hotel: H6
+	 Start time: 0
+	 Distance next: 26.181
+	 Idle time: -21.5974
+End hotel: H1
+
+------- Tour data -------
+Hotel seed: 161729
+Tour length: 222.208
+Tour score: 498
+Tour idle time: 19.4338
+Tour free time: 17.7921
+Instance total time: 23ms

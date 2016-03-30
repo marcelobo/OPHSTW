@@ -1,0 +1,66 @@
+ ---------- Trip #1 ---------- 
+Current length: 52.6494
+Current free time: 0.561977
+Current score: 230
+Start hotel: H0
+	 Start time: 0
+	 Distance next: 0.565686
+	 Idle time: 0
+POI 1
+	 Name: C24
+	 Start time: 0.565686
+	 Distance next: 3.80132
+	 Idle time: -2.38419e-007
+POI 2
+	 Name: C14
+	 Start time: 4.367
+	 Distance next: 4.12311
+	 Idle time: 0
+POI 3
+	 Name: C22
+	 Start time: 8.49011
+	 Distance next: 10.4005
+	 Idle time: 0
+POI 4
+	 Name: C17
+	 Start time: 18.8906
+	 Distance next: 2.06155
+	 Idle time: 0
+POI 5
+	 Name: C20
+	 Start time: 20.9521
+	 Distance next: 9.02109
+	 Idle time: 0
+POI 6
+	 Name: C21
+	 Start time: 29.9732
+	 Distance next: 22.6762
+	 Idle time: 0.561975
+End hotel: H2
+ ---------- Trip #2 ---------- 
+Current length: 28.5236
+Current free time: 15.5709
+Current score: 80
+Start hotel: H2
+	 Start time: 0
+	 Distance next: 6.96725
+	 Idle time: 3.10275
+POI 1
+	 Name: C18
+	 Start time: 10.07
+	 Distance next: 5.27755
+	 Idle time: 0
+POI 2
+	 Name: C19
+	 Start time: 15.3475
+	 Distance next: 16.2788
+	 Idle time: 12.4681
+End hotel: H1
+
+------- Tour data -------
+Hotel seed: 203289
+Tour length: 81.173
+Tour score: 310
+Tour idle time: 16.1329
+Tour free time: 18.827
+Instance total time: 11ms

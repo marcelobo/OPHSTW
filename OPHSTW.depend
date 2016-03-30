@@ -26,7 +26,7 @@
 	<dirent.h>
 	<string.h>
 
-1458104172 source:c:\users\marce\desktop\ophs\codigo\main.cpp
+1458124731 source:c:\users\marce\desktop\ophs\codigo\main.cpp
 	<iostream>
 	<fstream>
 	<ctime>
@@ -85,15 +85,73 @@
 1457569380 source:c:\users\marce\desktop\ophs\codigo\src\trip_point.cpp
 	"Trip_point.h"
 
-1457997386 c:\users\marce\desktop\ophs\codigo\include\tour.h
+1458124558 c:\users\marce\desktop\ophs\codigo\include\tour.h
 	<Trip_point.h>
 	<vector>
 
-1458087098 source:c:\users\marce\desktop\ophs\codigo\src\tour.cpp
+1458121638 source:c:\users\marce\desktop\ophs\codigo\src\tour.cpp
 	"Tour.h"
 	"Instance.h"
 	<cstdlib>
 	<iostream>
 	<cmath>
 	<vector>
+	<fstream>
+
+1459335455 source:h:\desktop\ophs\codigo\src\instance.cpp
+	"Instance.h"
+	<iostream>
+	<fstream>
+	<sstream>
+	"Point.h"
+
+1456688512 h:\desktop\ophs\codigo\include\instance.h
+	<string>
+	<vector>
+
+1456681762 h:\desktop\ophs\codigo\include\point.h
+	<string>
+	<vector>
+
+1456736794 source:h:\desktop\ophs\codigo\src\point.cpp
+	"Point.h"
+	"Trip_point.h"
+	"Instance.h"
+	<cmath>
+	<iostream>
+	<iterator>
+
+1457569374 h:\desktop\ophs\codigo\include\trip_point.h
+	<point.h>
+
+1459333076 source:h:\desktop\ophs\codigo\src\tour.cpp
+	"Tour.h"
+	"Instance.h"
+	<cstdlib>
+	<iostream>
+	<cmath>
+	<ctime>
+	<vector>
+	<fstream>
+	<sstream>
+
+1459331312 h:\desktop\ophs\codigo\include\tour.h
+	<Trip_point.h>
+	<vector>
+
+1457569380 source:h:\desktop\ophs\codigo\src\trip_point.cpp
+	"Trip_point.h"
+
+1459335093 source:h:\desktop\ophs\codigo\main.cpp
+	<iostream>
+	<fstream>
+	<string>
+	<ctime>
+	<cstring>
+	<algorithm>
+	<iomanip>
+	<Point.h>
+	<Tour.h>
+	<Instance.h>
+	<Trip_point.h>
 
