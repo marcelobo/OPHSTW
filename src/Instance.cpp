@@ -18,11 +18,12 @@ void Instance::Get_data_file(std::string name){
     std::string instance_fullname, file_line, point_name;
     int file_line_position, id = 0, excluded_poi = 0;
     float lenght_aux, point_x, point_y, point_score, point_service_time, point_opening_time, point_closing_time, max_trip_length = 0;
-    Point point_aux;
+    Point point_aux, point_aux_next;
 
     Instance::name = name;
     instance_fullname = filepath + name;
     //Open file
+    std::cout << "Instance name: " << instance_fullname << std::endl;
     instance_file.open(instance_fullname.c_str());
     if(!instance_file.is_open()){
         std::cout << "Couldn't open instance file!!!" << std::endl;
@@ -57,6 +58,7 @@ void Instance::Get_data_file(std::string name){
                         iss >> point_name >> point_x >> point_y >> point_score >> point_service_time >> point_opening_time >> point_closing_time;
                         point_aux = Point(point_name, id, point_x, point_y, point_score, point_service_time, point_opening_time, point_closing_time);
                         hotels.push_back(point_aux);
+                        id++;
                     }else{
                         //points of interest
                         iss >> point_name >> point_x >> point_y >> point_score >> point_service_time >> point_opening_time >> point_closing_time;
@@ -64,6 +66,7 @@ void Instance::Get_data_file(std::string name){
                         if(point_opening_time == 0 && point_closing_time == 0){
                             if(point_score == 0){
                                 excluded_poi++;
+                                this->num_vertices--;
                                 break;
                             }else{
                                 bool found_hotel = false;
@@ -72,19 +75,26 @@ void Instance::Get_data_file(std::string name){
                                         if(point_opening_time + point_service_time < max_trip_length){
                                             poi.push_back(point_aux);
                                             found_hotel = true;
+                                            id++;
                                             break;
                                         }
                                     }
                                 }
-                                if(!found_hotel)excluded_poi++;
+                                if(!found_hotel){
+                                    excluded_poi++;
+                                    this->num_vertices--;
+                                }
                             }
                         }else{
                             if(point_opening_time + point_service_time < max_trip_length){
                                 poi.push_back(point_aux);
+                                id++;
+                            }else{
+                                excluded_poi++;
+                                this->num_vertices--;
                             }
                         }
                     }
-                    id++;
                     break;
             }
 
@@ -94,6 +104,52 @@ void Instance::Get_data_file(std::string name){
     }
     instance_file.close();
     std::cout << "POI impossiveis: " << excluded_poi << std::endl;
+    int tot_vert = this->num_hotels + this->num_vertices;
+    Point_distance.resize(tot_vert);
+    for(int i = 0; i < tot_vert; i++){
+        Point_distance.at(i).resize(tot_vert);
+        for(int j = 0; j < tot_vert; j++){
+            point_aux = (i < this->num_hotels)? this->hotels.at(i): this->poi.at(i - this->num_hotels);
+            point_aux_next = (j < this->num_hotels)? this->hotels.at(j): this->poi.at(j - this->num_hotels);
+            Point_distance.at(i).at(j) = point_aux.Distance(point_aux_next);
+        }
+    }
+}
+
+void Instance::Generate_hotels_pairs(){
+    int i = 0, j = 0, k = 0;
+    std::vector<short> hotel_aux, prev_end_hotel;
+    hotel_aux.resize(this->num_hotels, 0);
+    prev_end_hotel.resize(this->num_hotels);
+    viable_hotel_pair.resize(this->num_trips);
+    viable_hotel_pair.at(0).resize(this->num_hotels, hotel_aux);
+    for(i = 0; i < this->num_hotels; i++){
+        if(this->Point_distance.at(0).at(i) <= this->trip_length.at(0)){
+            viable_hotel_pair.at(0).at(0).at(i) = 1;
+            prev_end_hotel.at(i) = 1;
+        }else{
+            viable_hotel_pair.at(0).at(0).at(i) = 0;
+            prev_end_hotel.at(i) = 0;
+        }
+
+    }
+
+    k = 1;
+    //Para cada trip
+    for(std::vector<std::vector< std::vector<short> > >::iterator it = viable_hotel_pair.begin() + 1; it != viable_hotel_pair.end(); it++, k++){
+        i = 0;
+        it->resize(this->num_hotels);
+        // Para cada hotel inicial
+        for(std::vector< std::vector<short> >::iterator it2 = it->begin(); it2 != it->end(); it2++, i++){
+            it2->resize(this->num_hotels, 0);
+            //Se possivel hotel final da trip anterior
+            if(prev_end_hotel.at(i)){
+                for(std::vector<short>::iterator it3 = it2->begin(); it3 != it2->end(); it3++, j++){
+                    *it3 = (this->Point_distance.at(i).at(j) <= this->trip_length.at(k))? 1: 0;
+                }
+            }
+        }
+    }
 }
 
 void Instance::Print_data(){

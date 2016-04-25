@@ -1,0 +1,98 @@
+ ---------- Trip #1 ---------- 
+Current length: 53.033
+Current free time: 0.178413
+Current score: 150
+Start hotel: H0
+	 Start time: 0
+	 Distance next: 0.565686
+	 Idle time: 0
+POI 1
+	 Name: C24
+	 Start time: 0.565686
+	 Distance next: 9.70824
+	 Idle time: 0
+POI 2
+	 Name: C10
+	 Start time: 10.2739
+	 Distance next: 4.70027
+	 Idle time: 0
+POI 3
+	 Name: C18
+	 Start time: 14.9742
+	 Distance next: 20.9106
+	 Idle time: 0
+POI 4
+	 Name: C13
+	 Start time: 35.8848
+	 Distance next: 8.94427
+	 Idle time: 0
+POI 5
+	 Name: C31
+	 Start time: 44.8291
+	 Distance next: 2.33452
+	 Idle time: -1.43051e-006
+POI 6
+	 Name: C8
+	 Start time: 47.1636
+	 Distance next: 5.86941
+	 Idle time: 0.178413
+End hotel: H1
+ ---------- Trip #2 ---------- 
+Current length: 43.9288
+Current free time: 0.165691
+Current score: 310
+Start hotel: H1
+	 Start time: 0
+	 Distance next: 4.88364
+	 Idle time: 0
+POI 1
+	 Name: C7
+	 Start time: 4.88364
+	 Distance next: 1.96977
+	 Idle time: 3.57628e-007
+POI 2
+	 Name: C22
+	 Start time: 6.85342
+	 Distance next: 8.49588
+	 Idle time: 0
+POI 3
+	 Name: C20
+	 Start time: 15.3493
+	 Distance next: 2.06155
+	 Idle time: 0
+POI 4
+	 Name: C17
+	 Start time: 17.4108
+	 Distance next: 7.33553
+	 Idle time: 0.620097
+POI 5
+	 Name: C21
+	 Start time: 25.3665
+	 Distance next: 4.68722
+	 Idle time: 0
+POI 6
+	 Name: C16
+	 Start time: 30.0537
+	 Distance next: 2.94109
+	 Idle time: 2.38419e-007
+POI 7
+	 Name: C15
+	 Start time: 32.9948
+	 Distance next: 4.66905
+	 Idle time: -1.43051e-006
+POI 8
+	 Name: C6
+	 Start time: 37.6638
+	 Distance next: 6.26498
+	 Idle time: 0.165693
+End hotel: H1
+
+------- Tour data -------
+Hotel seed: 161729
+Tour length: 96.9618
+Tour score: 460
+Tour idle time: 0.964201
+Tour free time: 3.03821
+Instance total time: 14ms
+ -------- Sorted Points --------- 
+C22 (V) - C21 (V) - C20 (V) - C19 - C18 (V) - C17 (V) - C16 (V) - C15 (V) - C11 - C14 - C13 (V) - C12 - C10 (V) - C9 - C3 - C29 - C30 - C31 (V) - C8 (V) - C7 (V) - C6 (V) - C5 - C4 - C2 - C23 - C24 (V) - C25 - C26 - C27 - C28 - C32 - C33 - 

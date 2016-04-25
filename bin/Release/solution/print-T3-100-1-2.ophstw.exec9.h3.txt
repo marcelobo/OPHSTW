@@ -1,0 +1,93 @@
+ ---------- Trip #1 ---------- 
+Current length: 53.0536
+Current free time: 0.15781
+Current score: 330
+Start hotel: H0
+	 Start time: 0
+	 Distance next: 4.01622
+	 Idle time: 0
+POI 1
+	 Name: C14
+	 Start time: 4.01622
+	 Distance next: 4.12311
+	 Idle time: 0
+POI 2
+	 Name: C22
+	 Start time: 8.13933
+	 Distance next: 10.4005
+	 Idle time: 0
+POI 3
+	 Name: C17
+	 Start time: 18.5398
+	 Distance next: 2.06155
+	 Idle time: 0
+POI 4
+	 Name: C20
+	 Start time: 20.6014
+	 Distance next: 9.02109
+	 Idle time: 0
+POI 5
+	 Name: C21
+	 Start time: 29.6224
+	 Distance next: 4.68722
+	 Idle time: 0
+POI 6
+	 Name: C16
+	 Start time: 34.3097
+	 Distance next: 2.94109
+	 Idle time: -1.66893e-006
+POI 7
+	 Name: C15
+	 Start time: 37.2507
+	 Distance next: 15.8028
+	 Idle time: -1.90735e-006
+POI 8
+	 Name: C11
+	 Start time: 53.0536
+	 Distance next: 0
+	 Idle time: 0.15781
+End hotel: H2
+ ---------- Trip #2 ---------- 
+Current length: 40.5189
+Current free time: 3.57561
+Current score: 150
+Start hotel: H2
+	 Start time: 0
+	 Distance next: 6.96725
+	 Idle time: 3.10275
+POI 1
+	 Name: C18
+	 Start time: 10.07
+	 Distance next: 5.27755
+	 Idle time: 0
+POI 2
+	 Name: C19
+	 Start time: 15.3475
+	 Distance next: 11.5884
+	 Idle time: 0
+POI 3
+	 Name: C9
+	 Start time: 26.9359
+	 Distance next: 8.6977
+	 Idle time: 1.90735e-006
+POI 4
+	 Name: C29
+	 Start time: 35.6336
+	 Distance next: 2.84605
+	 Idle time: 7.15256e-007
+POI 5
+	 Name: C30
+	 Start time: 38.4797
+	 Distance next: 5.14198
+	 Idle time: 0.472861
+End hotel: H1
+
+------- Tour data -------
+Hotel seed: 203289
+Tour length: 93.5725
+Tour score: 480
+Tour idle time: 3.73342
+Tour free time: 6.42752
+Instance total time: 12ms
+ -------- Sorted Points --------- 
+C22 (V) - C21 (V) - C20 (V) - C19 (V) - C18 (V) - C17 (V) - C16 (V) - C15 (V) - C11 (V) - C14 (V) - C13 - C12 - C10 - C9 (V) - C3 - C29 (V) - C30 (V) - C31 - C8 - C7 - C6 - C5 - C4 - C2 - C23 - C24 - C25 - C26 - C27 - C28 - C32 - C33 - 

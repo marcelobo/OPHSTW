@@ -1,0 +1,73 @@
+ ---------- Trip #1 ---------- 
+Current length: 30.5785
+Current free time: 0.340212
+Current score: 139
+Start hotel: H0
+	 Start time: 0
+	 Distance next: 11.1803
+	 Idle time: 0
+POI 1
+	 Name: C64
+	 Start time: 11.1803
+	 Distance next: 3.16228
+	 Idle time: -4.76837e-007
+POI 2
+	 Name: C15
+	 Start time: 14.3426
+	 Distance next: 5.83095
+	 Idle time: 0
+POI 3
+	 Name: C9
+	 Start time: 20.1736
+	 Distance next: 3
+	 Idle time: 0
+POI 4
+	 Name: C57
+	 Start time: 23.1736
+	 Distance next: 2.82843
+	 Idle time: 0
+POI 5
+	 Name: C12
+	 Start time: 26.002
+	 Distance next: 3.16228
+	 Idle time: -4.76837e-007
+POI 6
+	 Name: C100
+	 Start time: 29.1643
+	 Distance next: 1.41421
+	 Idle time: -3.57628e-007
+POI 7
+	 Name: C75
+	 Start time: 30.5785
+	 Distance next: 0
+	 Idle time: 0.340213
+End hotel: H2
+ ---------- Trip #2 ---------- 
+Current length: 26.7067
+Current free time: 2.14544
+Current score: 49
+Start hotel: H2
+	 Start time: 0
+	 Distance next: 8.24621
+	 Idle time: 0
+POI 1
+	 Name: C14
+	 Start time: 8.24621
+	 Distance next: 7.28011
+	 Idle time: 4.76837e-007
+POI 2
+	 Name: C22
+	 Start time: 15.5263
+	 Distance next: 11.1803
+	 Idle time: 2.14544
+End hotel: H1
+
+------- Tour data -------
+Hotel seed: 137309
+Tour length: 57.2851
+Tour score: 188
+Tour idle time: 2.48565
+Tour free time: 2.71485
+Instance total time: 12ms
+ -------- Sorted Points --------- 
+C12 (V) - C10 - C7 - C13 - C5 - C8 - C3 - C9 (V) - C6 - C4 - C15 (V) - C11 - C14 (V) - C2 - C47 - C46 - C49 - C53 - C33 - C22 (V) - C57 (V) - C32 - C23 - C58 - C45 - C24 - C21 - C44 - C17 - C28 - C37 - C42 - C41 - C50 - C29 - C26 - C61 - C18 - C36 - C19 - C38 - C54 - C31 - C30 - C56 - C48 - C52 - C40 - C35 - C43 - C16 - C51 - C39 - C25 - C20 - C60 - C34 - C55 - C27 - C59 - C62 - C81 - C87 - C100 (V) - C96 - C91 - C88 - C82 - C101 - C76 - C66 - C72 - C69 - C73 - C75 (V) - C92 - C67 - C85 - C95 - C63 - C79 - C84 - C94 - C71 - C89 - C90 - C65 - C74 - C77 - C78 - C70 - C93 - C86 - C64 (V) - C97 - C68 - C99 - C83 - C98 - C80 - C102 - 

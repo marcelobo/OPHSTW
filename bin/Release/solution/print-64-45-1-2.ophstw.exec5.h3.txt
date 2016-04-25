@@ -1,0 +1,108 @@
+ ---------- Trip #1 ---------- 
+Current length: 22.9415
+Current free time: 0.271753
+Current score: 252
+Start hotel: H0
+	 Start time: 0
+	 Distance next: 7.2111
+	 Idle time: 0
+POI 1
+	 Name: C27
+	 Start time: 7.2111
+	 Distance next: 1.41421
+	 Idle time: -3.57628e-007
+POI 2
+	 Name: C21
+	 Start time: 8.62532
+	 Distance next: 1.41421
+	 Idle time: -3.57628e-007
+POI 3
+	 Name: C28
+	 Start time: 10.0395
+	 Distance next: 1.41421
+	 Idle time: -3.57628e-007
+POI 4
+	 Name: C36
+	 Start time: 11.4537
+	 Distance next: 1.41421
+	 Idle time: -3.57628e-007
+POI 5
+	 Name: C43
+	 Start time: 12.868
+	 Distance next: 1.41421
+	 Idle time: -3.57628e-007
+POI 6
+	 Name: C49
+	 Start time: 14.2822
+	 Distance next: 1.41421
+	 Idle time: -3.57628e-007
+POI 7
+	 Name: C54
+	 Start time: 15.6964
+	 Distance next: 1.41421
+	 Idle time: 5.96046e-007
+POI 8
+	 Name: C48
+	 Start time: 17.1106
+	 Distance next: 5.83095
+	 Idle time: 0.271753
+End hotel: H1
+ ---------- Trip #2 ---------- 
+Current length: 20.9995
+Current free time: 0.217407
+Current score: 210
+Start hotel: H1
+	 Start time: 0
+	 Distance next: 3.16228
+	 Idle time: 0
+POI 1
+	 Name: C56
+	 Start time: 3.16228
+	 Distance next: 1.41421
+	 Idle time: 1.19209e-007
+POI 2
+	 Name: C51
+	 Start time: 4.57649
+	 Distance next: 1.41421
+	 Idle time: 0
+POI 3
+	 Name: C45
+	 Start time: 5.9907
+	 Distance next: 2.82843
+	 Idle time: 0.280869
+POI 4
+	 Name: C30
+	 Start time: 9.1
+	 Distance next: 1.41421
+	 Idle time: -3.57628e-007
+POI 5
+	 Name: C22
+	 Start time: 10.5142
+	 Distance next: 2
+	 Idle time: 0
+POI 6
+	 Name: C37
+	 Start time: 12.5142
+	 Distance next: 1.41421
+	 Idle time: -3.57628e-007
+POI 7
+	 Name: C44
+	 Start time: 13.9284
+	 Distance next: 2.82843
+	 Idle time: -7.15256e-007
+POI 8
+	 Name: C55
+	 Start time: 16.7569
+	 Distance next: 4.24264
+	 Idle time: 0.217406
+End hotel: H1
+
+------- Tour data -------
+Hotel seed: 161729
+Tour length: 43.941
+Tour score: 462
+Tour idle time: 0.770025
+Tour free time: 1.05896
+Instance total time: 11ms
+ -------- Sorted Points --------- 
+C36 (V) - C29 - C37 (V) - C22 (V) - C35 - C28 (V) - C43 (V) - C30 (V) - C23 - C21 (V) - C38 - C27 (V) - C16 - C42 - C31 - C44 (V) - C34 - C49 (V) - C32 - C26 - C33 - C20 - C24 - C39 - C17 - C15 - C41 - C11 - C54 (V) - C45 (V) - C48 (V) - C50 - C51 (V) - C40 - C46 - C47 - C25 - C19 - C18 - C14 - C53 - C12 - C10 - C55 (V) - C7 - C58 - C56 (V) - C57 - C59 - C61 - C52 - C13 - C9 - C8 - C6 - C4 - C62 - C63 - C3 - C60 - C5 - C2 - C64 - 

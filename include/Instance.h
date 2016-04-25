@@ -18,6 +18,8 @@ class Instance
         std::vector<Point> hotels;
         std::vector<Point> poi;
         std::vector<float> trip_length;
+        std::vector< std::vector< std::vector<short> > > viable_hotel_pair;
+        std::vector< std::vector<float> > Point_distance;
 
         //function
         Instance();
@@ -27,6 +29,7 @@ class Instance
         void Print_POI();
         void Print_hotels();
         void Print_trip_lengths();
+        void Generate_hotels_pairs();
 
         //function declaration
 //        int Getnum_vertices() { return num_vertices; }

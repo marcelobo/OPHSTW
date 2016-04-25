@@ -30,6 +30,7 @@ class Tour
         void Print_tour(Instance &inst);
         bool Validate_tour(Instance &inst);
         void Create_Solution_file(Instance &inst, std::vector<bool> &visited_points, std::vector<Point> &sorted_points, int exec_num, float exec_time, int heuristic_num = 1);
+        void Instance_Report(std::string instance_name, bool first, int heuristic, int execution, float time);
         void Create_Report_file(std::string instance_name, float best, std::vector<float> &best_by_heuristic, std::vector<float> &average_by_heuristic, std::vector<float> &average_time);
     protected:
 

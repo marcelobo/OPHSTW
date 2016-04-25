@@ -31,7 +31,7 @@ void Tour::Initialize_tour(int num_trips, int exec_time, int seed){
     trip_score.resize(num_trips, 0);
     trip.resize(num_trips);
     if(seed == 0){
-        this->seed =  prime[exec_time % 10] % 900000 + 100000;
+        this->seed =  prime[exec_time] % 900000 + 100000;
     }else{
         this->seed = seed;
     }
@@ -90,13 +90,13 @@ void Tour::Initialize_hotels(std::vector<Point> &hotels, std::vector<float> &len
     Point insert_point = inst.poi.at(point_id), prev, next;
     float curr_insert_cost, best_insert_cost = 0;
     bool has_best = false;
-
     // for every trip
     for(std::vector<std::vector<Trip_point> >::iterator it = this->trip.begin(); it != this->trip.end(); it++, num_trip++){
         tp_pos = 0;
         //for every point in the trip
         for(std::vector<Trip_point>::iterator itp = it->begin(); itp != it->end() - 1; itp++, tp_pos++){
             int itp_id = itp->Getpoint_id();
+
             if(itp == it->begin()) prev = inst.hotels.at(itp_id);
             else prev = inst.poi.at(itp_id);
             arriving_time = itp->Getarriving_time() + prev.Getservice_time() + insert_point.Distance(prev);
@@ -106,24 +106,17 @@ void Tour::Initialize_hotels(std::vector<Point> &hotels, std::vector<float> &len
                 if(itp + 2 == it->end()) next = inst.hotels.at((itp + 1)->Getpoint_id());
                 else next = inst.poi.at((itp + 1)->Getpoint_id());
                 dist_next_pt = insert_point.Distance(next);
-                if(arriving_time+ insert_point.Getservice_time() + dist_next_pt < next.Getopening_time()) dist_next_pt = next.Getopening_time() - (arriving_time + insert_point.Getservice_time());
-                //curr_insert_cost = prev.Distance(insert_point) + insert_point.Getservice_time() + insert_point.Distance(next) - itp->Getidle_time(); //minimo tempo livre
-                //curr_insert_cost = prev.Distance(insert_point) + insert_point.Getservice_time() + insert_point.Distance(next); //minimo tempo gasto
-                //curr_insert_cost = itp->Getidle_time() - (prev.Distance(insert_point) + insert_point.Getservice_time() + insert_point.Distance(next)); //maximo tempo livre
+                if(arriving_time + insert_point.Getservice_time() + dist_next_pt < next.Getopening_time()) dist_next_pt = next.Getopening_time() - (arriving_time + insert_point.Getservice_time());
 
                 //If POI can be inserted
-                if(itp->Getidle_time() >= arriving_time + insert_point.Getservice_time() + dist_next_pt ||
+                //std::cout << "Idle: " << itp->Getidle_time() << "\t Spent: " << arriving_time + insert_point.Getservice_time() + dist_next_pt << std::endl;
+                if(itp->Getidle_time() >= (arriving_time - itp->Getarriving_time() + prev.Getservice_time()) + insert_point.Getservice_time() + dist_next_pt ||
                 this->Insert_with_delay(inst, this->trip.at(num_trip), tp_pos + 1, (arriving_time + insert_point.Getservice_time() + dist_next_pt) - itp->Getidle_time(), false)){
                     if(this->Is_best_insert_position(inst, num_trip, tp_pos, point_id, heuristic_num, best_insert_cost, has_best)){
                         best_trip = num_trip;
                         best_position = tp_pos;
                         has_best = true;
                     }
-//                    if(curr_insert_cost < best_insert_cost){
-//                        best_insert_cost = curr_insert_cost;
-//                        best_trip = num_trip;
-//                        best_position = tp_pos;
-//                    }
                 }
             }
         }
@@ -381,46 +374,53 @@ void Tour::Create_Solution_file(Instance &inst, std::vector<bool> &visited_point
     solution_file << "Tour idle time: " << total_idle_time << std::endl;
     solution_file << "Tour free time: " << inst.tour_length - total_length << std::endl;
     solution_file << "Instance total time: " << exec_time << "ms" << std::endl;
+
+    solution_file << " -------- Sorted Points --------- " << std::endl;
+    point_id = 0;
+    for(std::vector<Point>::iterator it = sorted_points.begin(); it != sorted_points.end(); it++, point_id++ ){
+        solution_file << it->Getname() ;
+        if(visited_points.at(point_id)) solution_file << " (V)";
+        solution_file << " - ";
+    }
     solution_file.close();
 
     //Generate the files used for plotting graphs
     filename_aux.str("");
-    filename_aux << ".\\solution\\plot-" << inst.name << ".exec" << exec_num << ".h" << heuristic_num << ".dat";
+    filename_aux << ".\\solution\\plot-" << inst.name << ".h" << heuristic_num << ".exec" << exec_num << ".dat";
     solution_plot_filename = filename_aux.str();
     solution_plot.open(solution_plot_filename.c_str());
 
     for(int i = 0; i < inst.num_trips; i++){
-        solution_plot << inst.hotels.at(this->trip.at(i).at(0).Getpoint_id()).Getname() << "\t" << inst.hotels.at(this->trip.at(i).at(0).Getpoint_id()).Getx() << "\t" << inst.poi.at(this->trip.at(i).at(0).Getpoint_id()).Gety() << std::endl;
+        solution_plot << inst.hotels.at(this->trip.at(i).at(0).Getpoint_id()).Getname() << "\t" << inst.hotels.at(this->trip.at(i).at(0).Getpoint_id()).Getx() << "\t" << inst.hotels.at(this->trip.at(i).at(0).Getpoint_id()).Gety() << "\t" << 0 << std::endl;
         for(std::vector<Trip_point>::iterator it = this->trip.at(i).begin() + 1; it != this->trip.at(i).end() - 1; it++) {
-            solution_plot << inst.poi.at(it->Getpoint_id()).Getname() << "\t" << inst.poi.at(it->Getpoint_id()).Getx() << "\t" << inst.poi.at(it->Getpoint_id()).Gety() << std::endl;
+            solution_plot << inst.poi.at(it->Getpoint_id()).Getname() << "\t" << inst.poi.at(it->Getpoint_id()).Getx() << "\t" << inst.poi.at(it->Getpoint_id()).Gety() << "\t" << inst.poi.at(it->Getpoint_id()).Getscore() << std::endl;
         }
-        solution_plot << inst.hotels.at(this->trip.at(i).back().Getpoint_id()).Getname() << "\t" << inst.hotels.at(this->trip.at(i).back().Getpoint_id()).Getx() << "\t" << inst.poi.at(this->trip.at(i).back().Getpoint_id()).Gety() << std::endl;
+        solution_plot << inst.hotels.at(this->trip.at(i).back().Getpoint_id()).Getname() << "\t" << inst.hotels.at(this->trip.at(i).back().Getpoint_id()).Getx() << "\t" << inst.hotels.at(this->trip.at(i).back().Getpoint_id()).Gety() << "\t" << 0 << std::endl;
         solution_plot << std::endl;
     }
     solution_plot.close();
 
     filename_aux.str("");
-    filename_aux << ".\\solution\\plot-" << inst.name << ".exec" << exec_num << ".h" << heuristic_num << ".notvisited.dat";
+    filename_aux << ".\\solution\\plot-" << inst.name << ".h" << heuristic_num << ".exec" << exec_num << ".notvisited.dat";
     not_visited_plot_filename = filename_aux.str();
     not_visited_plot.open(not_visited_plot_filename.c_str());
+    point_id = 0;
     for(std::vector<bool>::iterator it2 = visited_points.begin(); it2 != visited_points.end(); it2++, point_id++){
         if(!(*it2)){
-            not_visited_plot << sorted_points.at(point_id).Getname() << "\t" << sorted_points.at(point_id).Getx() << "\t" << sorted_points.at(point_id).Gety() << std::endl;
+            not_visited_plot << sorted_points.at(point_id).Getname() << "\t" << sorted_points.at(point_id).Getx() << "\t" << sorted_points.at(point_id).Gety()  << "\t" << sorted_points.at(point_id).Getscore() << std::endl;
         }
     }
     not_visited_plot.close();
 }
 
-void Tour::Create_Report_file(std::string instance_name, float best, std::vector<float> &best_by_heuristic, std::vector<float> &average_by_heuristic, std::vector<float> &average_time){
+void Tour::Instance_Report(std::string instance_name, bool first, int heuristic, int execution, float time){
     std::ofstream report;
     int heuristic_num = 0;
 
-    report.open((".\\solution\\report" + instance_name + ".csv").c_str());
-    report << "Instancia; Best; Melhor H1; Média H1; Média Tempo H1; Melhor H2; Média H2; Média Tempo H2; Melhor H3; Média H3; Média Tempo H3" << std::endl;
-    report << instance_name << ";" << best << ";";
-    for(std::vector<float>::iterator it = best_by_heuristic.begin(); it != best_by_heuristic.end(); it++, heuristic_num++){
-        report << best_by_heuristic.at(heuristic_num) << ";" << average_by_heuristic.at(heuristic_num) << ";" << average_time.at(heuristic_num) << ";";
-    }
+    if(first){
+        report.open(".\\solution\\Instance-report.csv", std::fstream::out);
+        report << "Instance; Heuristic; Execution; Score; Time(ms);" << std::endl;
+    }else report.open(".\\solution\\Instance-report.csv", std::fstream::app);
+    report << instance_name << ";" << heuristic << ";" << execution << ";" << this->Gettour_score() << ";" << time << ";" << std::endl;
     report.close();
 }
-

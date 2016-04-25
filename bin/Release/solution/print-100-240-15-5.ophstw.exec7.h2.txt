@@ -1,0 +1,195 @@
+ ---------- Trip #1 ---------- 
+Current length: 49.2003
+Current free time: 1.0887
+Current score: 188
+Start hotel: H0
+	 Start time: 0
+	 Distance next: 5.39179
+	 Idle time: 0
+POI 1
+	 Name: C87
+	 Start time: 5.39179
+	 Distance next: 2.37192
+	 Idle time: -2.38419e-007
+POI 2
+	 Name: C42
+	 Start time: 7.76371
+	 Distance next: 2.67007
+	 Idle time: 0
+POI 3
+	 Name: C4
+	 Start time: 10.4338
+	 Distance next: 3.60624
+	 Idle time: 0
+POI 4
+	 Name: C24
+	 Start time: 14.04
+	 Distance next: 2.34412
+	 Idle time: 0
+POI 5
+	 Name: C8
+	 Start time: 16.3841
+	 Distance next: 2.7013
+	 Idle time: 0
+POI 6
+	 Name: C15
+	 Start time: 19.0854
+	 Distance next: 6.98041
+	 Idle time: -4.76837e-007
+POI 7
+	 Name: C51
+	 Start time: 26.0659
+	 Distance next: 10.9805
+	 Idle time: 0
+POI 8
+	 Name: C64
+	 Start time: 37.0463
+	 Distance next: 4.68155
+	 Idle time: 1.43214
+POI 9
+	 Name: C71
+	 Start time: 43.16
+	 Distance next: 6.04031
+	 Idle time: 1.0887
+End hotel: H11
+ ---------- Trip #2 ---------- 
+Current length: 48.1815
+Current free time: 0.301052
+Current score: 92
+Start hotel: H11
+	 Start time: 0
+	 Distance next: 7.63551
+	 Idle time: 0
+POI 1
+	 Name: C85
+	 Start time: 7.63551
+	 Distance next: 19.4666
+	 Idle time: 1.48794
+POI 2
+	 Name: C65
+	 Start time: 28.59
+	 Distance next: 3.17844
+	 Idle time: 0.0915585
+POI 3
+	 Name: C55
+	 Start time: 31.86
+	 Distance next: 3.51336
+	 Idle time: -1.19209e-006
+POI 4
+	 Name: C59
+	 Start time: 35.3734
+	 Distance next: 12.8082
+	 Idle time: 0.301052
+End hotel: H13
+ ---------- Trip #3 ---------- 
+Current length: 51.9131
+Current free time: 0.115822
+Current score: 75
+Start hotel: H13
+	 Start time: 0
+	 Distance next: 2.37929
+	 Idle time: 0
+POI 1
+	 Name: C97
+	 Start time: 2.37929
+	 Distance next: 9.90618
+	 Idle time: 0
+POI 2
+	 Name: C30
+	 Start time: 12.2855
+	 Distance next: 15.68
+	 Idle time: 0
+POI 3
+	 Name: C14
+	 Start time: 27.9655
+	 Distance next: 23.9476
+	 Idle time: 0.115824
+End hotel: H9
+ ---------- Trip #4 ---------- 
+Current length: 48.9309
+Current free time: 1.4045
+Current score: 146
+Start hotel: H9
+	 Start time: 0
+	 Distance next: 9.35892
+	 Idle time: 0
+POI 1
+	 Name: C80
+	 Start time: 9.35892
+	 Distance next: 5.26031
+	 Idle time: 4.76837e-007
+POI 2
+	 Name: C60
+	 Start time: 14.6192
+	 Distance next: 7.35843
+	 Idle time: 0
+POI 3
+	 Name: C26
+	 Start time: 21.9777
+	 Distance next: 5.04429
+	 Idle time: 0
+POI 4
+	 Name: C6
+	 Start time: 27.022
+	 Distance next: 9.03001
+	 Idle time: 0
+POI 5
+	 Name: C18
+	 Start time: 36.052
+	 Distance next: 7.51809
+	 Idle time: 0
+POI 6
+	 Name: C11
+	 Start time: 43.5701
+	 Distance next: 1.69779
+	 Idle time: -1.19209e-007
+POI 7
+	 Name: C81
+	 Start time: 45.2678
+	 Distance next: 3.66306
+	 Idle time: -7.15256e-007
+POI 8
+	 Name: C21
+	 Start time: 48.9309
+	 Distance next: 0
+	 Idle time: 1.4045
+End hotel: H3
+ ---------- Trip #5 ---------- 
+Current length: 37.0506
+Current free time: 0.383984
+Current score: 73
+Start hotel: H3
+	 Start time: 0
+	 Distance next: 6.30317
+	 Idle time: 0
+POI 1
+	 Name: C43
+	 Start time: 6.30317
+	 Distance next: 6.02672
+	 Idle time: 0
+POI 2
+	 Name: C96
+	 Start time: 12.3299
+	 Distance next: 20.1395
+	 Idle time: 1.90735e-006
+POI 3
+	 Name: C56
+	 Start time: 32.4694
+	 Distance next: 3.57799
+	 Idle time: -4.76837e-007
+POI 4
+	 Name: C83
+	 Start time: 36.0474
+	 Distance next: 1.00319
+	 Idle time: 0.383982
+End hotel: H1
+
+------- Tour data -------
+Hotel seed: 185259
+Tour length: 235.276
+Tour score: 574
+Tour idle time: 6.30569
+Tour free time: 4.72356
+Instance total time: 19ms
+ -------- Sorted Points --------- 
+C84 - C51 (V) - C96 (V) - C14 (V) - C65 (V) - C18 (V) - C15 (V) - C43 (V) - C8 (V) - C64 (V) - C41 - C28 - C30 (V) - C4 (V) - C85 (V) - C97 (V) - C78 - C9 - C55 (V) - C6 (V) - C19 - C25 - C93 - C77 - C58 - C24 (V) - C11 (V) - C46 - C81 (V) - C79 - C20 - C59 (V) - C68 - C53 - C89 - C13 - C56 (V) - C26 (V) - C73 - C91 - C10 - C29 - C42 (V) - C60 (V) - C71 (V) - C63 - C80 (V) - C75 - C39 - C49 - C90 - C21 (V) - C38 - C23 - C98 - C88 - C35 - C87 (V) - C74 - C37 - C34 - C95 - C82 - C31 - C27 - C40 - C36 - C61 - C2 - C50 - C17 - C12 - C57 - C3 - C99 - C32 - C45 - C47 - C52 - C70 - C62 - C76 - C33 - C48 - C7 - C5 - C69 - C54 - C67 - C92 - C94 - C16 - C22 - C72 - C44 - C86 - C83 (V) - C66 - C100 - 
