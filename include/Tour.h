@@ -17,9 +17,9 @@ class Tour
         void Settrip_score(int num_trip, float ts) {trip_score.at(num_trip) = ts;}
         float Gettour_score();
         Trip_point Getstart_hotel(int num_trip) { return trip.at(num_trip).at(0); }
-        void Setstart_hotel(const Trip_point &sh, int num_trip) {trip.at(num_trip).front() = sh;}
+        void Setstart_hotel(const Trip_point &sh, int num_trip);
         Trip_point Getend_hotel(int num_trip) { return trip.at(num_trip).back(); }
-        void Setend_hotel(const Trip_point &eh, int num_trip) {trip.at(num_trip).back() = eh;}
+        void Setend_hotel(const Trip_point &eh, int num_trip);
         void Generate_tour(Instance &inst, std::vector<Point> &sorted_points, std::vector<bool> &visited_points, int num_trip);
         void Initialize_tour(int num_trips, int exec_time, int seed = 0);
         void Initialize_hotels(std::vector<Point> &hotels, std::vector<float> &length);

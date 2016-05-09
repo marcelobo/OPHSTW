@@ -26,7 +26,7 @@ string inst_names[] = {"64-45-1-2.ophstw","102-60-1-2.ophstw", "T3-100-1-2.ophst
 
 int main(int argc, char *argv[]) {
     //variables
-    int i, instance_number = 0, heuristic = 1, execution = 1;
+    int i, instance_number = 4, heuristic = 1, execution = 1;
     Instance instance;
     string instance_filename, file_line;
     clock_t reading_time_start, reading_time_end, time_start, time_end;
@@ -70,6 +70,8 @@ int main(int argc, char *argv[]) {
     solution = Tour();
     solution.Initialize_tour(instance.num_trips, execution);
     solution.Initialize_hotels(instance.hotels, instance.trip_length);
+    instance.Generate_hotels_pairs();
+    instance.Calculate_hotel_zone();
 
     //Sorting POI's list
     vector<Point> sorted_points(instance.poi);
@@ -85,8 +87,8 @@ int main(int argc, char *argv[]) {
     }
     time_end = clock();
     exec_time = (time_end - time_start) / double(CLOCKS_PER_SEC) * 1000;
+    cout << "Instance total time: " << exec_time << "ms" << endl;
     if(print_instance_solution){
-        cout << "Instance total time: " << exec_time << "ms" << endl;
         solution.Print_tour(instance);
 
         cout << "------------ POI not visited ---------------- " << endl;

@@ -25,6 +25,22 @@ float Tour::Gettour_score(){
     return tour_score;
 }
 
+void Tour::Setstart_hotel(const Trip_point &sh, int num_trip) {
+    if(trip.at(num_trip).empty()){
+        trip.at(num_trip).push_back(sh);
+    }else{
+        trip.at(num_trip).front() = sh;
+    }
+}
+
+void Tour::Setend_hotel(const Trip_point &eh, int num_trip) {
+    if(trip.at(num_trip).size() >= 2){
+        trip.at(num_trip).back() = eh;
+    }else{
+        trip.at(num_trip).push_back(eh);
+    }
+}
+
 void Tour::Initialize_tour(int num_trips, int exec_time, int seed){
     int prime[10]  = { 16741, 25457, 37309, 44021, 53267, 61729, 74419, 85259, 98473, 103289};
     trip_length.resize(num_trips, 0);
