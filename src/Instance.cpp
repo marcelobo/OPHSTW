@@ -179,9 +179,61 @@ void Instance::Generate_hotels_pairs(){
         }
     }
     std::cout << "end viable" << std::endl;
+    std::cout.precision(1);
+     for(k = 0; k < this->num_trips; k++){
+        std::cout << "Trip #" << k << std::endl;
+        for(i = 0; i < this->num_hotels; i++){
+            for(j = 0; j < this->num_hotels; j++){
+                std::cout << viable_hotel_pair.at(k).at(i).at(j) << "\t";
+            }
+            std::cout << std::endl;
+        }
+        std::cout << std::endl;
+    }
 
     //cleaning the viable hotel graph
+    // look on every ending hotel, if it is a starting for the next trip, if not, remove every edge ending on it
+    int i2, j2, k2, cleaned = 0;
+    bool has_edge = false, next_trip_edge = false;
+    for(k = this->num_trips - 2; k >= 0; k--){
+        for(j = 0; j < this->num_hotels; j++){
+            for(i = 0; i < this->num_hotels; i++){
+                if(viable_hotel_pair.at(k).at(i).at(j)){
+                    //search for edge on next trip
+                    k2 = k + 1;
+                    i2 = j;
+                    for(j2 = 0; j2 < this->num_hotels; j2++){
+                        if(viable_hotel_pair.at(k2).at(i2).at(j2)){
+                            next_trip_edge = true;
+                            cleaned++;
+                            break;
+                        }
+                    }
+                    //if there isn't any path from ending hotel on  next trip, erase all paths arriving at this hotel on current trip
+                    if(!next_trip_edge){
+                        for(i2 = 0; i2 < this->num_hotels; i2++){
+                            viable_hotel_pair.at(k).at(i2).at(j) = 0;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+    }
 
+    std::cout << "-********************* After cleaning **********************************----" << std::endl;
+    std::cout << "Cleaned: " << cleaned << std::endl;
+     for(k = 0; k < this->num_trips; k++){
+        std::cout << "Trip #" << k << std::endl;
+        for(i = 0; i < this->num_hotels; i++){
+            for(j = 0; j < this->num_hotels; j++){
+                std::cout << viable_hotel_pair.at(k).at(i).at(j) << "\t";
+            }
+            std::cout << std::endl;
+        }
+        std::cout << std::endl;
+    }
+    std::cout.precision(5);
     //changing the viable hotel graph for score hotel graph
     Tour hotel_pair_trip;
     std::vector<Point> sorted_points(this->poi);
@@ -287,14 +339,14 @@ void Instance::Calculate_hotel_zone(){
 }
 
 void Instance::Best_hotel_sequence(){
-    int k, j, best_hotel, best_previous_hotel;
+    int i, k, j, best_hotel, best_previous_hotel;
     float best_hotel_score = 0;
     std::vector< std::vector<short> > count_pairs;
     std::vector<int> hotel_sequence(this->num_trips + 1, 0);
 
     count_pairs.resize(this->num_hotels);
     for(i = 0; i < this->num_hotels; i++){
-        count_pairs.resize(this->num_hotels, 0);
+        count_pairs.at(i).resize(this->num_hotels, 0);
     }
 
     //Set start and end hotel for this tour
@@ -311,14 +363,14 @@ void Instance::Best_hotel_sequence(){
     hotel_sequence.at(1) = best_hotel;
     count_pairs.at(0).at(best_hotel)++;
 
-    for(k = 1; k < this->num_trips; k++){
-        for(j = 0; j < this->num_hotels; j++){
-            if(best_hotel_score < this->viable_hotel_pair.at(k).at ){
-
-            }
-        }
-
-    }
+//    for(k = 1; k < this->num_trips; k++){
+//        for(j = 0; j < this->num_hotels; j++){
+//            if(best_hotel_score < this->viable_hotel_pair.at(k).at(0) ){
+//
+//            }
+//        }
+//
+//    }
 
 }
 

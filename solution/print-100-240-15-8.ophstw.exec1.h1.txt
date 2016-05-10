@@ -282,6 +282,6 @@ Tour length: 229.703
 Tour score: 672
 Tour idle time: 15.9845
 Tour free time: 10.2971
-Instance total time: 2890ms
+Instance total time: 2696ms
  -------- Sorted Points --------- 
 C84 - C51 (V) - C96 - C14 (V) - C65 (V) - C18 - C15 (V) - C43 - C8 (V) - C64 (V) - C41 (V) - C28 - C30 - C4 (V) - C85 (V) - C97 (V) - C78 - C9 (V) - C55 (V) - C6 (V) - C19 - C25 - C93 - C77 (V) - C58 (V) - C24 (V) - C11 - C46 (V) - C81 - C79 (V) - C20 (V) - C59 (V) - C68 (V) - C53 (V) - C89 - C13 (V) - C56 (V) - C26 - C73 - C91 (V) - C10 (V) - C29 - C42 (V) - C60 - C71 - C63 (V) - C80 - C75 (V) - C39 - C49 - C90 - C21 - C38 - C23 - C98 - C88 - C35 - C87 (V) - C74 (V) - C37 - C34 - C95 - C82 - C31 (V) - C27 - C40 (V) - C36 (V) - C61 (V) - C2 (V) - C50 - C17 (V) - C12 - C57 - C3 - C99 - C32 - C45 - C47 - C52 - C70 - C62 - C76 - C33 - C48 - C7 - C5 - C69 - C54 - C67 (V) - C92 - C94 - C16 (V) - C22 (V) - C72 - C44 - C86 (V) - C83 - C66 - C100 - 
