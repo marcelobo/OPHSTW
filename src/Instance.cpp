@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <algorithm>
+#include <ctime>
 #include "Point.h"
 #include "Tour.h"
 
@@ -119,12 +120,22 @@ void Instance::Get_data_file(std::string name){
     }
 }
 
+struct trip_length_id{
+    int id;
+    float length;
+    bool operator < (const trip_length_id& tli) const{ return (this->length > tli.length);}
+    trip_length_id(){}
+    trip_length_id(int i, float l):id(i),length(l){}
+};
+
 void Instance::Generate_hotels_pairs(){
     int i = 0, j = 0, k = 0;
     std::vector<short> prev_end_hotel, curr_start_hotel;
     std::vector<float> hotel_aux;
+    clock_t start_viable, end_viable, start_cleaning, end_cleaning, start_calculation, end_calculation;
 
     //creating the viable hotel graph
+    start_viable = clock();
     hotel_aux.resize(this->num_hotels, 0);
     prev_end_hotel.resize(this->num_hotels);
     viable_hotel_pair.resize(this->num_trips);
@@ -178,21 +189,24 @@ void Instance::Generate_hotels_pairs(){
             }
         }
     }
-    std::cout << "end viable" << std::endl;
-    std::cout.precision(1);
-     for(k = 0; k < this->num_trips; k++){
-        std::cout << "Trip #" << k << std::endl;
-        for(i = 0; i < this->num_hotels; i++){
-            for(j = 0; j < this->num_hotels; j++){
-                std::cout << viable_hotel_pair.at(k).at(i).at(j) << "\t";
-            }
-            std::cout << std::endl;
-        }
-        std::cout << std::endl;
-    }
+    end_viable = clock();
+//    std::cout << "end viable" << std::endl;
+//    std::cout.precision(1);
+//     for(k = 0; k < this->num_trips; k++){
+//        std::cout << "Trip #" << k << std::endl;
+//        for(i = 0; i < this->num_hotels; i++){
+//            for(j = 0; j < this->num_hotels; j++){
+//                std::cout << viable_hotel_pair.at(k).at(i).at(j) << "\t";
+//            }
+//            std::cout << std::endl;
+//        }
+//        std::cout << std::endl;
+//    }
+
 
     //cleaning the viable hotel graph
     // look on every ending hotel, if it is a starting for the next trip, if not, remove every edge ending on it
+    start_cleaning = clock();
     int i2, j2, k2, cleaned = 0;
     bool has_edge = false, next_trip_edge = false;
     for(k = this->num_trips - 2; k >= 0; k--){
@@ -220,25 +234,41 @@ void Instance::Generate_hotels_pairs(){
             }
         }
     }
+    end_cleaning = clock();
+//    std::cout << "-********************* After cleaning **********************************----" << std::endl;
+//    std::cout << "Cleaned: " << cleaned << std::endl;
+//     for(k = 0; k < this->num_trips; k++){
+//        std::cout << "Trip #" << k << std::endl;
+//        for(i = 0; i < this->num_hotels; i++){
+//            for(j = 0; j < this->num_hotels; j++){
+//                std::cout << viable_hotel_pair.at(k).at(i).at(j) << "\t";
+//            }
+//            std::cout << std::endl;
+//        }
+//        std::cout << std::endl;
+//    }
+//    std::cout.precision(5);
 
-    std::cout << "-********************* After cleaning **********************************----" << std::endl;
-    std::cout << "Cleaned: " << cleaned << std::endl;
-     for(k = 0; k < this->num_trips; k++){
-        std::cout << "Trip #" << k << std::endl;
-        for(i = 0; i < this->num_hotels; i++){
-            for(j = 0; j < this->num_hotels; j++){
-                std::cout << viable_hotel_pair.at(k).at(i).at(j) << "\t";
-            }
-            std::cout << std::endl;
-        }
-        std::cout << std::endl;
-    }
-    std::cout.precision(5);
     //changing the viable hotel graph for score hotel graph
+    start_calculation = clock();
     Tour hotel_pair_trip;
     std::vector<Point> sorted_points(this->poi);
     std::sort(sorted_points.begin(),sorted_points.end());
     std::vector<Point>::iterator itp;
+    std::vector<trip_length_id> sorted_trip_length;
+    trip_length_id aux_tli;
+
+    i = 0;
+    for(std::vector<float>::iterator it = this->trip_length.begin(); it != this->trip_length.end(); it++, i++){
+        aux_tli = trip_length_id(i, *it);
+        sorted_trip_length.push_back(aux_tli);
+    }
+
+    std::sort(sorted_trip_length.begin(), sorted_trip_length.end());
+
+    for(std::vector<trip_length_id>::iterator it = sorted_trip_length.begin(); it != sorted_trip_length.end(); it++, i++){
+        std::cout << "ID #" << it->id << "\tLength: " << it->length << std::endl;
+    }
 
     for(k = 0; k < this->num_trips; k++){
         //if first trip
@@ -293,7 +323,7 @@ void Instance::Generate_hotels_pairs(){
             }
         }
     }
-
+    end_calculation = clock();
 //    //print
 //    for(k = 0; k < this->num_trips; k++){
 //        std::cout << "Trip #" << k << std::endl;
@@ -305,6 +335,11 @@ void Instance::Generate_hotels_pairs(){
 //        }
 //        std::cout << std::endl;
 //    }
+
+    std::cout << "------------------ Hotel Generation Time ------------------" << std::endl;
+    std::cout << "Viable: " << (end_viable - start_viable) / double(CLOCKS_PER_SEC) * 1000 << std::endl;
+    std::cout << "Cleaning: " << (end_cleaning - start_cleaning) / double(CLOCKS_PER_SEC) * 1000 << std::endl;
+    std::cout << "Calculation: " << (end_calculation - start_calculation) / double(CLOCKS_PER_SEC) * 1000 << std::endl;
 }
 
 void Instance::Calculate_hotel_zone(){
@@ -312,9 +347,9 @@ void Instance::Calculate_hotel_zone(){
     float max_length = 0, sum_zone = 0;
 
     for(i = 0; i < this->num_trips; i++){
-        if(max_length < this->trip_length.at(i)) max_length = this->trip_length.at(i);
+        if(max_length < this->trip_length.at(i)) max_length += this->trip_length.at(i);
     }
-
+    max_length /= this->num_trips;
     hotel_pair_zone.resize(this->num_hotels);
     for(i = 0; i < this->num_hotels; i++){
         hotel_pair_zone.at(i).resize(this->num_hotels, 0);
@@ -330,12 +365,13 @@ void Instance::Calculate_hotel_zone(){
         }
     }
 
-    for(i = 0; i < this->num_hotels; i++){
-        for(j = 0; j < this->num_hotels; j++){
-            std::cout << hotel_pair_zone.at(i).at(j) << "/" << countzone << "\t";
-        }
-        std::cout << std::endl;
-    }
+    //print
+//    for(i = 0; i < this->num_hotels; i++){
+//        for(j = 0; j < this->num_hotels; j++){
+//            std::cout << hotel_pair_zone.at(i).at(j) << "/" << countzone << "\t";
+//        }
+//        std::cout << std::endl;
+//    }
 }
 
 void Instance::Best_hotel_sequence(){

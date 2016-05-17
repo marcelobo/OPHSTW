@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
     int i, instance_number = 4, heuristic = 1, execution = 1;
     Instance instance;
     string instance_filename, file_line;
-    clock_t reading_time_start, reading_time_end, time_start, time_end;
+    clock_t reading_time_start, reading_time_end, time_start, time_end, hotel_start, hotel_end, start_hotelgen, end_hotelgen;
     float reading_time = 0, exec_time, tour_score = 0;
     Tour solution;
     unsigned int seed;
@@ -70,9 +70,15 @@ int main(int argc, char *argv[]) {
     solution = Tour();
     solution.Initialize_tour(instance.num_trips, execution);
     solution.Initialize_hotels(instance.hotels, instance.trip_length);
+    //Start hotel pair generation and selection
+    hotel_start = clock();
+    start_hotelgen = clock();
     instance.Generate_hotels_pairs();
+    end_hotelgen = clock();
     instance.Calculate_hotel_zone();
-
+    hotel_end = clock();
+    cout << "Hotel generation: " << (end_hotelgen - start_hotelgen) / double(CLOCKS_PER_SEC) * 1000 << "ms" << endl;
+    cout << "Hotel pair time: " << (hotel_end - hotel_start) / double(CLOCKS_PER_SEC) * 1000 << "ms" << endl;
     //Sorting POI's list
     vector<Point> sorted_points(instance.poi);
     sort(sorted_points.begin(),sorted_points.end());
