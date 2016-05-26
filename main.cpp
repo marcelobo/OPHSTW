@@ -10,6 +10,7 @@
 #include <Tour.h>
 #include <Instance.h>
 #include <Trip_point.h>
+#include <Hotel_Sequences.h>
 
 using namespace std;
 
@@ -21,8 +22,15 @@ using namespace std;
 //Path to instances directories
 string Instance::filepath = "./instances/";
 
-string inst_names[] = {"64-45-1-2.ophstw","102-60-1-2.ophstw", "T3-100-1-2.ophstw", "T3-105-1-2.ophstw", "100-240-15-8.ophstw", "100-190-15-8.ophstw",
-    "100-210-15-5.ophstw", "100-240-15-5.ophstw"};
+string inst_names[] = {
+    "64-45-1-2.ophstw",
+    "102-60-1-2.ophstw",
+    "T3-100-1-2.ophstw",
+    "T3-105-1-2.ophstw",
+    "100-240-15-8.ophstw",
+    "100-190-15-8.ophstw",
+    "100-210-15-5.ophstw",
+    "100-240-15-5.ophstw"};
 
 int main(int argc, char *argv[]) {
     //variables
@@ -33,6 +41,7 @@ int main(int argc, char *argv[]) {
     float reading_time = 0, exec_time, tour_score = 0;
     Tour solution;
     unsigned int seed;
+    Hotel_Sequences hsequences(40, 0.35);
 
     if(argc == 4){
         instance_number = atoi(argv[1]) % (sizeof(inst_names) / sizeof(*inst_names));
@@ -70,15 +79,14 @@ int main(int argc, char *argv[]) {
     solution = Tour();
     solution.Initialize_tour(instance.num_trips, execution);
     solution.Initialize_hotels(instance.hotels, instance.trip_length);
+
     //Start hotel pair generation and selection
     hotel_start = clock();
-    start_hotelgen = clock();
     instance.Generate_hotels_pairs();
-    end_hotelgen = clock();
     instance.Calculate_hotel_zone();
+    hsequences.Generate_hotel_sequence(instance, 1);
     hotel_end = clock();
-    cout << "Hotel generation: " << (end_hotelgen - start_hotelgen) / double(CLOCKS_PER_SEC) * 1000 << "ms" << endl;
-    cout << "Hotel pair time: " << (hotel_end - hotel_start) / double(CLOCKS_PER_SEC) * 1000 << "ms" << endl;
+    cout << "Hotel total time: " << (hotel_end - hotel_start) / double(CLOCKS_PER_SEC) * 1000 << "ms" << endl;
     //Sorting POI's list
     vector<Point> sorted_points(instance.poi);
     sort(sorted_points.begin(),sorted_points.end());

@@ -11,6 +11,8 @@ class Tour
         static const float epsilon = 0.0001;
         Tour();
         virtual ~Tour();
+        std::vector<Trip_point> Gettrip(int num_trip) { return trip.at(num_trip); }
+        void Settrip(int num_trip, std::vector<Trip_point> tp) {trip.at(num_trip) = tp;}
         float Gettrip_length(int num_trip) { return trip_length.at(num_trip); }
         void Settrip_length(int num_trip, float cl) {trip_length.at(num_trip) = cl;}
         float Gettrip_score(int num_trip) { return trip_score.at(num_trip); }
@@ -32,12 +34,17 @@ class Tour
         void Create_Solution_file(Instance &inst, std::vector<bool> &visited_points, std::vector<Point> &sorted_points, int exec_num, float exec_time, int heuristic_num = 1);
         void Instance_Report(std::string instance_name, bool first, int heuristic, int execution, float time);
         void Create_Report_file(std::string instance_name, float best, std::vector<float> &best_by_heuristic, std::vector<float> &average_by_heuristic, std::vector<float> &average_time);
+        int Gettrip_size(){return trip.size();}
+        void Add_not_visited_point(int id);
+        bool Is_visited_point(int id);
+        void Visit_point(int id);
     protected:
 
     private:
         std::vector<float> trip_length;
         std::vector<float> trip_score;
         std::vector<std::vector<Trip_point> > trip;
+        std::vector<int> not_visited_points;
         unsigned int seed;
 };
 

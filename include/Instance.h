@@ -4,6 +4,7 @@
 #include <vector>
 
 class Point;
+class Trip_point;
 
 class Instance
 {
@@ -19,8 +20,10 @@ class Instance
         std::vector<Point> poi;
         std::vector<float> trip_length;
         std::vector< std::vector< std::vector<float> > > viable_hotel_pair;//Vector sequence: trip, start hotel, end hotel
+        std::vector< std::vector< std::vector< std::vector<Trip_point> > > > viable_hotel_points;//Vector sequence: trip, start hotel, end_hotel, poi visited
         std::vector< std::vector<float> > Point_distance;
         std::vector< std::vector<float> > hotel_pair_zone;
+
 
         //function
         Instance();
@@ -32,7 +35,7 @@ class Instance
         void Print_trip_lengths();
         void Generate_hotels_pairs();
         void Calculate_hotel_zone();
-        void Best_hotel_sequence();
+        std::vector<int> Best_hotel_sequence(float alpha);
 
         //function declaration
 //        int Getnum_vertices() { return num_vertices; }

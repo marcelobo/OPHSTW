@@ -289,7 +289,7 @@ bool Tour::Is_best_insert_position(Instance &inst, int num_trip, int prev_pos, i
 
 void Tour::Print_tour(Instance &inst){
     float total_length = 0, total_score = 0, total_idle_time = 0, dist_next = 0;
-    for(int i = 0; i < inst.num_trips; i++){
+    for(int i = 0; i < this->trip.size(); i++){
         total_length += this->Gettrip_length(i);
         total_score += this->Gettrip_score(i);
         std::cout << " ---------- Trip #" << i + 1 << " ---------- " << std::endl;
