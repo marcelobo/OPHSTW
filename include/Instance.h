@@ -18,9 +18,10 @@ class Instance
         std::string name;
         std::vector<Point> hotels;
         std::vector<Point> poi;
+        std::vector<std::pair<int,int> > sorted_poi; //Store ID and Score from sorted POI. Biggest to smallest
         std::vector<float> trip_length;
-        std::vector< std::vector< std::vector<float> > > viable_hotel_pair;//Vector sequence: trip, start hotel, end hotel
-        std::vector< std::vector< std::vector< std::vector<Trip_point> > > > viable_hotel_points;//Vector sequence: trip, start hotel, end_hotel, poi visited
+        std::vector< std::vector< std::vector<float> > > viable_hotel_pair;//Store trip score for each hotel pair / Vector sequence: trip, start hotel, end hotel
+        std::vector< std::vector< std::vector< std::vector<Trip_point> > > > viable_hotel_points;//Vector that stores POI's for each hotel pair / Vector sequence: trip, start hotel, end_hotel, poi visited
         std::vector< std::vector<float> > Point_distance;
         std::vector< std::vector<float> > hotel_pair_zone;
 
@@ -35,7 +36,8 @@ class Instance
         void Print_trip_lengths();
         void Generate_hotels_pairs();
         void Calculate_hotel_zone();
-        std::vector<int> Best_hotel_sequence(float alpha);
+        std::vector<int> Best_hotel_sequence();
+        std::vector<int> Random_hotel_sequence();
 
         //function declaration
 //        int Getnum_vertices() { return num_vertices; }

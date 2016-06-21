@@ -7,6 +7,12 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
+#include <utility>
+#include <algorithm>
+
+bool Sort_visited_poi(std::pair<Point,int> poi1, std::pair<Point,int> poi2){
+    return (poi1.first.Getscore() > poi2.first.Getscore());
+}
 
 Tour::Tour(){
     //ctor
@@ -41,21 +47,21 @@ void Tour::Setend_hotel(const Trip_point &eh, int num_trip) {
     }
 }
 
-void Tour::Initialize_tour(int num_trips, int exec_time, int seed){
+void Tour::Initialize_tour(Instance &inst, int exec_time, int num_trips, int seed){
+    int total_trips = (num_trips == 0)? inst.num_trips : num_trips;
     int prime[10]  = { 16741, 25457, 37309, 44021, 53267, 61729, 74419, 85259, 98473, 103289};
-    trip_length.resize(num_trips, 0);
-    trip_score.resize(num_trips, 0);
-    trip.resize(num_trips);
+    trip_length.resize(total_trips, 0);
+    trip_score.resize(total_trips, 0);
+    trip.resize(total_trips);
+    for(std::vector<Point>::iterator it = inst.poi.begin(); it != inst.poi.end(); it++){
+        this->visited_points.push_back(std::make_pair(*it, -1));
+    }
+
     if(seed == 0){
         this->seed =  prime[exec_time] % 900000 + 100000;
     }else{
         this->seed = seed;
     }
-//    if(seed == 0){
-//        int rand_num = pow(prime[std::rand() % 10], 17);
-//        seed = (rand_num  % 90000000) + 10000000;
-//    }
-
 }
 
 void Tour::Initialize_hotels(std::vector<Point> &hotels, std::vector<float> &length){
@@ -94,6 +100,34 @@ void Tour::Initialize_hotels(std::vector<Point> &hotels, std::vector<float> &len
     tp_aux = Trip_point(1, length.back() - hotels.at(1).Getservice_time(), 0);
     this->trip.back().push_back(tp_aux);
     this->Settrip_length(num_trips - 1, hotels.at(this->Getstart_hotel(num_trips - 1).Getpoint_id()).Distance(hotels.at(tp_aux.Getpoint_id())));
+}
+
+void Tour::Erase_all_POI(){
+    //Erase all POI in each trip
+    for(std::vector<std::vector<Trip_point> >::iterator it = this->trip.begin(); it != this->trip.end(); it++){
+        if(it->size() > 2){
+            it->erase(it->begin() + 1, it->end() - 1);
+        }
+    }
+
+    //Erase all trin in visited POI's
+    for(std::vector<std::pair<Point, int> >::iterator it = visited_points.begin(); it != visited_points.end(); it++){
+        it->second = -1;
+    }
+}
+
+/**
+  * Try to insert Not visited POI
+ */
+void Tour::Visiting_poi(Instance &inst){
+    int id = 0;
+    std::vector<std::pair<Point, int> > sorted_points(this->visited_points);
+    std::sort(sorted_points.begin(), sorted_points.end(), Sort_visited_poi);
+    for(std::vector<std::pair<Point, int> >::iterator it = sorted_points.begin(); it != sorted_points.end(); it++){
+        if(it->second == -1){
+            this->Insert_point(inst, it->first.Getid(), 1);
+        }
+    }
 }
 
 /**
@@ -157,6 +191,7 @@ void Tour::Initialize_hotels(std::vector<Point> &hotels, std::vector<float> &len
                 Trip_point(point_id, arriving_time, next_tp->Getarriving_time() - (arriving_time + insert_point.Getservice_time())));
         this->trip_score.at(best_trip) += inst.poi.at(point_id).Getscore();
         this->trip_length.at(best_trip) = this->Calculate_trip_length(best_trip, inst);
+        this->visited_points.at(point_id).second = best_trip;
         return true;
     }
     return false;
@@ -209,9 +244,13 @@ bool Tour::Insert_with_delay(Instance &inst, std::vector<Trip_point> &curr_trip,
     first_poi = this->trip.at(num_trip).at(1);
     last_poi = this->trip.at(num_trip).at(this->trip.at(num_trip).size() - 2);
 
-    length = inst.hotels.at(start_hotel.Getpoint_id()).Distance(inst.poi.at(first_poi.Getpoint_id()));
-    length += (last_poi.Getarriving_time() + inst.poi.at(last_poi.Getpoint_id()).Getservice_time()) - first_poi.Getarriving_time();
-    length += inst.poi.at(last_poi.Getpoint_id()).Distance(inst.hotels.at(end_hotel.Getpoint_id()));
+    if(this->trip.at(num_trip).size() > 2){
+        length = inst.hotels.at(start_hotel.Getpoint_id()).Distance(inst.poi.at(first_poi.Getpoint_id()));
+        length += (last_poi.Getarriving_time() + inst.poi.at(last_poi.Getpoint_id()).Getservice_time()) - first_poi.Getarriving_time();
+        length += inst.poi.at(last_poi.Getpoint_id()).Distance(inst.hotels.at(end_hotel.Getpoint_id()));
+    }else{
+        length = inst.Point_distance.at(start_hotel.Getpoint_id()).at(end_hotel.Getpoint_id());
+    }
     return length;
  }
 
@@ -258,13 +297,187 @@ bool Tour::Is_best_insert_position(Instance &inst, int num_trip, int prev_pos, i
     return false;
  }
 
+ void Tour::Tour_cleaning(Instance &inst){
+    int curr_trip = 0, curr_poi, prev_trip, prev_poi;
+    float curr_length, prev_length;
+    std::vector<int> poi_prev_pos (inst.num_vertices, 0); //stores the most recent position in the tour where POI i was found
+    std::vector<int> poi_prev_trip (inst.num_vertices, -1); //stores the most recent trip in the tour where POI i was found
+    for(std::vector<std::pair<Point, int> >::iterator it = this->visited_points.begin(); it != this->visited_points.end(); it++ ){
+        it->second = -1;
+    }
+    //each trip
+    for(std::vector<std::vector<Trip_point> >::iterator it = this->trip.begin(); it != this->trip.end(); it++, curr_trip++){
+        //each POI, dont search on hotels
+        curr_poi = 1;
+        for(std::vector<Trip_point>::iterator it2 = it->begin() + 1; it2 != it->end() - 1; curr_poi++){
+            //if current POI is duplicated
+            if(poi_prev_pos.at(it2->Getpoint_id()) != 0 ){
+                prev_trip = poi_prev_trip.at(it2->Getpoint_id());
+                prev_poi = poi_prev_pos.at(it2->Getpoint_id());
+                if(prev_poi == 1){//if previous occurrence is first POI in trip
+                    // distance between start hotel and current POI
+                    prev_length = inst.Point_distance.at(this->trip.at(prev_trip).at(0).Getpoint_id()).at(inst.num_hotels + this->trip.at(prev_trip).at(prev_poi).Getpoint_id());
+                }else{
+                    //distance between previous and current POI
+                    int prev_poi_id = this->trip.at(prev_trip).at(prev_poi - 1).Getpoint_id();
+                    int curr_poi_id = this->trip.at(prev_trip).at(prev_poi).Getpoint_id();
+                    prev_length = inst.Point_distance.at(inst.num_hotels + prev_poi_id).at(inst.num_hotels + curr_poi_id);
+                }
+
+                if(prev_poi == this->trip.at(prev_trip).size() - 2){//if previous occurrence is last POI in trip
+                    // distance between current POI and end hotel
+                    prev_length += inst.Point_distance.at(inst.num_hotels + this->trip.at(prev_trip).at(prev_poi).Getpoint_id()).at(this->trip.at(prev_trip).at(prev_poi + 1).Getpoint_id() );
+                }else{
+                    //distance between current and next POI
+                    prev_length += inst.Point_distance.at(inst.num_hotels + this->trip.at(prev_trip).at(prev_poi).Getpoint_id()).at(inst.num_hotels + this->trip.at(prev_trip).at(prev_poi + 1).Getpoint_id());
+                }
+
+                if(curr_poi == 1){
+                    curr_length = inst.Point_distance.at(this->trip.at(curr_trip).at(0).Getpoint_id()).at(inst.num_hotels + this->trip.at(curr_trip).at(curr_poi).Getpoint_id());
+                }else{
+                    curr_length  = inst.Point_distance.at(inst.num_hotels + this->trip.at(curr_trip).at(curr_poi - 1).Getpoint_id()).at(inst.num_hotels + this->trip.at(curr_trip).at(curr_poi).Getpoint_id());
+                }
+
+                if(curr_poi == this->trip.at(curr_trip).size() - 2){//if previous occurrence is last POI in trip
+                    // distance between current POI and end hotel
+                    curr_length += inst.Point_distance.at(inst.num_hotels + this->trip.at(curr_trip).at(curr_poi).Getpoint_id()).at(this->trip.at(curr_trip).at(curr_poi + 1).Getpoint_id() );
+                }else{
+                    //distance between current and next POI
+                    curr_length += inst.Point_distance.at(inst.num_hotels + this->trip.at(curr_trip).at(curr_poi).Getpoint_id()).at(inst.num_hotels + this->trip.at(curr_trip).at(curr_poi + 1).Getpoint_id());
+                }
+
+                if(curr_length < prev_length){
+                    //update all next poi position before erasing
+                    for(int i = prev_poi + 1; i < this->trip.at(prev_trip).size() - 1; i++){
+                        //the element was found on a previous trip
+                        if(poi_prev_trip.at(this->trip.at(prev_trip).at(i).Getpoint_id()) == prev_trip){
+                            poi_prev_pos.at(this->trip.at(prev_trip).at(i).Getpoint_id())--;
+                        }
+                    }
+                    //remove previous occurrence
+                    this->trip.at(prev_trip).erase(this->trip.at(prev_trip).begin() + prev_poi);
+                    it2 = this->trip.at(curr_trip).begin() + curr_poi;
+                    poi_prev_pos.at(it2->Getpoint_id()) = curr_poi;
+                    poi_prev_trip.at(it2->Getpoint_id()) = curr_trip;
+                    it2++;
+                }else{
+                    it2 = this->trip.at(curr_trip).erase(it2);
+                    curr_poi--;
+                }
+            }else{
+                poi_prev_pos.at(it2->Getpoint_id()) = curr_poi;
+                poi_prev_trip.at(it2->Getpoint_id()) = curr_trip;
+                this->visited_points.at(it2->Getpoint_id()).second = curr_trip;
+                it2++;
+            }
+        }
+    }
+ }
+
+void Tour::Recalculate_time(Instance &inst){
+    int curr_trip = 0, curr_point, total_poi;
+    Trip_point prev_tp, next_tp;
+    Point next, prev, curr;
+    float curr_distance, idle_time, curr_trip_score, curr_trip_time, total_time;
+    for(std::vector<std::vector<Trip_point> >::iterator it = this->trip.begin(); it != this->trip.end(); it++, curr_trip++){
+        curr_point = 0;
+        curr_trip_score = 0;
+        total_poi = it->size();
+        for(std::vector<Trip_point>::iterator it2 = it->begin(); it2 != it->end() - 1; it2++, curr_point++){
+            next_tp = *(it2 + 1);
+            if(curr_point == 0){//if current point is start hotel
+                curr = inst.hotels.at(it2->Getpoint_id());
+                //next point is a POI
+                if(curr_point < total_poi - 2){
+                    next = inst.poi.at(next_tp.Getpoint_id());
+                    curr_distance = inst.Point_distance.at(it2->Getpoint_id()).at(inst.num_hotels + next.Getid());
+                    if(it2->Getarriving_time() + curr.Getservice_time() + curr_distance <= next.Getopening_time()) next_tp.Setarriving_time(next.Getopening_time());
+                    else next_tp.Setarriving_time(it2->Getarriving_time() + curr_distance);
+                }else{//if next is end hotel
+                    next = inst.hotels.at(next_tp.Getpoint_id());
+                    curr_distance = inst.Point_distance.at(it2->Getpoint_id()).at(next.Getid());
+                }
+            }else{//if current point is a POI
+                curr = inst.poi.at(it2->Getpoint_id());
+                curr_trip_score += curr.Getscore();
+                //next point is a POI
+                if(curr_point < total_poi - 2){
+                    next = inst.poi.at(next_tp.Getpoint_id());
+                    curr_distance = inst.Point_distance.at(inst.num_hotels + it2->Getpoint_id()).at(inst.num_hotels + next.Getid());
+                    if(it2->Getarriving_time() + curr.Getservice_time() + curr_distance <= next.Getopening_time()) next_tp.Setarriving_time(next.Getopening_time());
+                    else next_tp.Setarriving_time(it2->Getarriving_time() + curr_distance);
+                }else{//if next is end hotel
+                    next = inst.hotels.at(next_tp.Getpoint_id());
+                    curr_distance = inst.Point_distance.at(inst.num_hotels + it2->Getpoint_id()).at(next.Getid());
+                }
+            }
+
+            float idle = next_tp.Getarriving_time() - (it2->Getarriving_time() + curr.Getservice_time());
+            it2->Setidle_time(idle);
+        }
+        this->Settrip_score(curr_trip, curr_trip_score);
+        this->Settrip_length(curr_trip, this->Calculate_trip_length(curr_trip,inst));
+
+    }
+
+ }
+
+/**
+  * Select one hotel position an changes it for a new possible hotel
+  */
+void Tour::Mutation(Instance &inst){
+    if(inst.num_trips > 1){
+        int trip_change_hotel = (inst.num_trips == 2)? 0 : rand() % (inst.num_trips - 1);
+        int total_possible = 0, roulette, i;
+        int prev_hotel_id = this->trip.at(trip_change_hotel).at(0).Getpoint_id();
+        int next_hotel_id = this->trip.at(trip_change_hotel + 1).back().Getpoint_id();
+
+        // create roulette
+        for(i = 0; i < inst.num_hotels; i++){
+            //if hotel i is a possible hotel
+            if(inst.viable_hotel_pair.at(trip_change_hotel).at(prev_hotel_id).at(i) > 0 &&
+            inst.viable_hotel_pair.at(trip_change_hotel).at(i).at(next_hotel_id) > 0 ){
+                total_possible += inst.viable_hotel_pair.at(trip_change_hotel).at(prev_hotel_id).at(i) +
+                    inst.viable_hotel_pair.at(trip_change_hotel).at(i).at(next_hotel_id);
+            }
+        }
+        roulette = rand() % total_possible;
+        total_possible = 0;
+        //find new hotel
+        for(i = 0; i < inst.num_hotels; i++){
+                //if hotel i is a possible hotel
+            if(inst.viable_hotel_pair.at(trip_change_hotel).at(prev_hotel_id).at(i) > 0 &&
+            inst.viable_hotel_pair.at(trip_change_hotel).at(i).at(next_hotel_id) > 0 && total_possible < roulette ){
+                total_possible += inst.viable_hotel_pair.at(trip_change_hotel).at(prev_hotel_id).at(i) +
+                    inst.viable_hotel_pair.at(trip_change_hotel).at(i).at(next_hotel_id);
+            }
+            if(total_possible >= roulette) break;
+        }
+        //Erase all poi visited
+        for(int j = trip_change_hotel; j < trip_change_hotel + 1; j++){
+            for(std::vector<Trip_point>::iterator it =  this->trip.at(j).begin() + 1; it !=  this->trip.at(j).end() - 1; it++){
+                this->visited_points.at(it->Getpoint_id()).second = -1;
+            }
+        }
+        this->trip.at(trip_change_hotel).erase(this->trip.at(trip_change_hotel).begin() + 1, this->trip.at(trip_change_hotel).end());
+        this->trip.at(trip_change_hotel + 1).erase(this->trip.at(trip_change_hotel + 1).begin() + 1, this->trip.at(trip_change_hotel + 1).end() - 1);
+        //insert new hotel
+        this->trip.at(trip_change_hotel).push_back(Trip_point(i, this->trip_length.at(trip_change_hotel) - inst.hotels.at(i).Getservice_time(), 0));
+        this->trip.at(trip_change_hotel + 1).at(0) = Trip_point(i, 0, this->trip_length.at(trip_change_hotel + 1) - inst.hotels.at(i).Getservice_time() - inst.hotels.at(next_hotel_id).Getservice_time());
+        this->Recalculate_time(inst);
+        this->Visiting_poi(inst);
+    }
+}
+
  bool Tour::Validate_tour(Instance &inst){
     int num_trip = 0;
     Point curr, next;
+    bool valid = true;
     std::cout << "------------ Validation ---------------- " << std::endl;
     for(std::vector<std::vector<Trip_point> >::iterator it = this->trip.begin(); it != this->trip.end(); it++, num_trip++){
         if(this->Gettrip_length(num_trip) > inst.trip_length.at(num_trip)){
             std::cout << "Excedido tamanho maximo da trip: " << num_trip + 1 << std::endl;
+            valid = false;
         }
         for(std::vector<Trip_point>::iterator itp = it->begin(); itp != it->end() - 1; itp++){
             if(itp == it->begin()) curr = inst.hotels.at(itp->Getpoint_id());
@@ -276,15 +489,19 @@ bool Tour::Is_best_insert_position(Instance &inst, int num_trip, int prev_pos, i
                 std::cout << "\tChegada: " << itp->Getarriving_time() << std::endl;
                 std::cout << "\tAbertura: " << curr.Getopening_time() << std::endl;
                 std::cout << "\tHorario maximo: " << curr.Getmax_delay() << std::endl;
+                valid = false;
             }
             //If not penultimate point
             if(itp->Getidle_time() - curr.Distance(next) < this->epsilon && fabs(itp->Getidle_time() - curr.Distance(next)) > this->epsilon){
                 std::cout << "Distancia entre pontos maior que Idle time: " << curr.Getname() << " -> " << next.Getname() << std::endl;
                 std::cout << "\tDistancia: " << curr.Distance(next) << std::endl;
                 std::cout << "\tIdle time: " << itp->Getidle_time() << std::endl;
+                valid = false;
             }
         }
     }
+    if(valid) std::cout << "\tValid Tour." << std::endl;
+    return valid;
  }
 
 void Tour::Print_tour(Instance &inst){
@@ -333,6 +550,37 @@ void Tour::Print_tour(Instance &inst){
     std::cout << "Tour score: " << total_score << std::endl;
     std::cout << "Tour idle time: " << total_idle_time << std::endl;
     std::cout << "Tour free time: " << inst.tour_length - total_length << std::endl;
+}
+
+void Tour::Print_simple_tour(Instance &inst){
+    for(int i = 0; i < this->trip.size(); i++){
+        std::cout << "Trip #" << i + 1 << "\tTotal Points:" << this->trip.at(i).size() <<  std::endl << "\t";
+        std::cout << inst.hotels.at(this->trip.at(i).at(0).Getpoint_id()).Getname() << " - ";
+
+        //Print POI
+        if(this->trip.at(i).size() > 2){
+            for(std::vector<Trip_point>::iterator it = this->trip.at(i).begin() + 1; it != this->trip.at(i).end() - 1; it++) {
+                std::cout << inst.poi.at(it->Getpoint_id()).Getname() << " - ";
+            }
+        }
+
+        std::cout << inst.hotels.at(this->trip.at(i).back().Getpoint_id()).Getname() << std::endl;
+    }
+     std::cout << "Tour Score: " << this->Gettour_score() << "\n";
+}
+
+void Tour::Print_hotel_sequence(Instance &inst){
+    for( std::vector<std::vector<Trip_point> >::iterator it = this->trip.begin(); it != this->trip.end(); it++){
+        std::cout << inst.hotels.at(it->at(0).Getpoint_id()).Getname() << " - ";
+    }
+    std::cout << inst.hotels.at(this->trip.back().back().Getpoint_id()).Getname();
+}
+
+void Tour::Print_visited_poi(Instance &inst){
+    for(std::vector<std::pair<Point, int> >::iterator it = this->visited_points.begin(); it != this->visited_points.end(); it++){
+        std::cout << "POI " << it->first.Getname() <<"\tScore: " << it->first.Getscore() << "\tTrip " << it->second << "\n";
+    }
+
 }
 
 void Tour::Create_Solution_file(Instance &inst, std::vector<bool> &visited_points, std::vector<Point> &sorted_points, int exec_num, float exec_time, int heuristic_num){

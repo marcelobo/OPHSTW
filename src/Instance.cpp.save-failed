@@ -3,14 +3,12 @@
 #include <fstream>
 #include <sstream>
 #include <algorithm>
-#include <cstdlib>
 #include <ctime>
-#include <cmath>
 #include "Point.h"
 #include "Tour.h"
 
 #define print_debug_hotel_generation 0
-#define print_time_hotel_generation 0
+#define print_time_hotel_generation 1
 
 
 Instance::Instance(){
@@ -20,10 +18,6 @@ Instance::Instance(){
 Instance::~Instance()
 {
     //dtor
-}
-
-bool Sort_poi(std::pair<int, int> poi1, std::pair<int, int> poi2){
-    return(poi1.second > poi2.second);
 }
 
 void Instance::Get_data_file(std::string name){
@@ -76,9 +70,8 @@ void Instance::Get_data_file(std::string name){
                         //points of interest
                         iss >> point_name >> point_x >> point_y >> point_score >> point_service_time >> point_opening_time >> point_closing_time;
                         point_aux = Point(point_name, id, point_x, point_y, point_score, point_service_time, point_opening_time, point_closing_time);
-
-                        if((point_opening_time == 0 && point_closing_time == 0) || (point_closing_time < point_opening_time )){
-                            if(point_score == 0 || (point_closing_time < point_opening_time )){
+                        if(point_opening_time == 0 && point_closing_time == 0){
+                            if(point_score == 0){
                                 excluded_poi++;
                                 this->num_vertices--;
                                 break;
@@ -88,7 +81,6 @@ void Instance::Get_data_file(std::string name){
                                     if(ith->Distance(point_aux) < point_aux.Getmax_delay()){
                                         if(point_opening_time + point_service_time < max_trip_length){
                                             poi.push_back(point_aux);
-                                            sorted_poi.push_back(std::make_pair(point_aux.Getid(),point_aux.Getscore()));
                                             found_hotel = true;
                                             id++;
                                             break;
@@ -103,7 +95,6 @@ void Instance::Get_data_file(std::string name){
                         }else{
                             if(point_opening_time + point_service_time < max_trip_length){
                                 poi.push_back(point_aux);
-                                sorted_poi.push_back(std::make_pair(point_aux.Getid(),point_aux.Getscore()));
                                 id++;
                             }else{
                                 excluded_poi++;
@@ -131,8 +122,6 @@ void Instance::Get_data_file(std::string name){
             Point_distance.at(i).at(j) = point_aux.Distance(point_aux_next);
         }
     }
-    //Sort list of POI
-    std::sort(sorted_poi.begin(), sorted_poi.end(), Sort_poi);
 }
 
 struct trip_length_id{
@@ -212,21 +201,18 @@ void Instance::Generate_hotels_pairs(){
         }
     }
     end_viable = clock();
-    if(print_debug_hotel_generation){
-        std::cout << "********************************** Before cleaning **********************************" << std::endl;
-        std::cout.precision(0);
-        for(k = 0; k < this->num_trips; k++){
-            std::cout << "Trip #" << k << std::endl;
-            for(i = 0; i < this->num_hotels; i++){
-                for(j = 0; j < this->num_hotels; j++){
-                    std::cout << viable_hotel_pair.at(k).at(i).at(j) << " ";
-                }
-                std::cout << std::endl;
-            }
-            std::cout << std::endl;
-        }
-        std::cout.precision(5);
-    }
+//    std::cout.precision(1);
+//     for(k = 0; k < this->num_trips; k++){
+//        std::cout << "Trip #" << k << std::endl;
+//        for(i = 0; i < this->num_hotels; i++){
+//            for(j = 0; j < this->num_hotels; j++){
+//                std::cout << viable_hotel_pair.at(k).at(i).at(j) << "\t";
+//            }
+//            std::cout << std::endl;
+//        }
+//        std::cout << std::endl;
+//    }
+
 
     //cleaning the viable hotel graph
     // look on every ending hotel, if it is a starting for the next trip, if not, remove every edge ending on it
@@ -235,13 +221,13 @@ void Instance::Generate_hotels_pairs(){
     bool has_edge = false, next_trip_edge = false;
     for(k = this->num_trips - 2; k >= 0; k--){
         for(j = 0; j < this->num_hotels; j++){
-            next_trip_edge = false;
             for(i = 0; i < this->num_hotels; i++){
                 if(viable_hotel_pair.at(k).at(i).at(j)){
                     //search for edge on next trip
                     k2 = k + 1;
+                    i2 = j;
                     for(j2 = 0; j2 < this->num_hotels; j2++){
-                        if(viable_hotel_pair.at(k2).at(j).at(j2)){
+                        if(viable_hotel_pair.at(k2).at(i2).at(j2)){
                             next_trip_edge = true;
                             cleaned++;
                             break;
@@ -252,8 +238,8 @@ void Instance::Generate_hotels_pairs(){
                         for(i2 = 0; i2 < this->num_hotels; i2++){
                             viable_hotel_pair.at(k).at(i2).at(j) = 0;
                         }
-                        break;
                     }
+                    break;
                 }
             }
         }
@@ -262,7 +248,7 @@ void Instance::Generate_hotels_pairs(){
     if(print_debug_hotel_generation){
         std::cout << "********************************** After cleaning **********************************" << std::endl;
         std::cout << "Cleaned: " << cleaned << std::endl;
-        std::cout.precision(0);
+        std::cout.precision(1);
         for(k = 0; k < this->num_trips; k++){
             std::cout << "Trip #" << k << std::endl;
             for(i = 0; i < this->num_hotels; i++){
@@ -283,8 +269,10 @@ void Instance::Generate_hotels_pairs(){
     start_calculation = clock();
     Tour hotel_pair_trip;
     std::vector<Trip_point> trip_aux, smaller_trip;
+    std::vector<Point> sorted_points(this->poi);
     std::vector<bool> visited_points(this->num_vertices, false);
-    std::vector<std::pair<int, int> >::iterator itp;
+    std::sort(sorted_points.begin(),sorted_points.end());
+    std::vector<Point>::iterator itp;
     std::vector<trip_length_id> sorted_trip_length;
     trip_length_id aux_tli;
     float smaller_score = 0, smaller_length = 0;
@@ -307,7 +295,7 @@ void Instance::Generate_hotels_pairs(){
                 //if there is a path from hotel i to hotel j on trip it->id
                 if(viable_hotel_pair.at(it->id).at(i).at(j)){
                     hotel_pair_trip = Tour();
-                    hotel_pair_trip.Initialize_tour(*this, 1, 1, 0);
+                    hotel_pair_trip.Initialize_tour(1, 1, 0);
                     if(has_smaller){
                         hotel_pair_trip.Settrip(0, smaller_trip);
                         hotel_pair_trip.Settrip_score(0, smaller_score);
@@ -318,9 +306,9 @@ void Instance::Generate_hotels_pairs(){
                     }
                     start_calc_pair = clock();
                     pos_sorted = 0;
-                    for(itp = this->sorted_poi.begin(); itp != this->sorted_poi.end(); itp++, pos_sorted++){
+                    for(itp = sorted_points.begin(); itp != sorted_points.end(); itp++, pos_sorted++){
                         if(!visited_points.at(pos_sorted)){
-                            if(hotel_pair_trip.Insert_point(*this, itp->first, 1)){
+                            if(hotel_pair_trip.Insert_point(*this, itp->Getid(), 1)){
                                 visited_points.at(pos_sorted) = true;
                             }
                         }
@@ -337,6 +325,7 @@ void Instance::Generate_hotels_pairs(){
         }
     }
     end_calculation = clock();
+    std::cout << "Sum calc pair " << calc_pair_sum << std::endl;
 
     //print
     if(print_debug_hotel_generation){
@@ -364,24 +353,24 @@ void Instance::Generate_hotels_pairs(){
 }
 
 void Instance::Calculate_hotel_zone(){
-    int i, j, k, cz;
-    float max_length = 0, sum_zone = 0, minor_diameter = 0, dist_hotels, min_trip_length;
-    min_trip_length = this->trip_length.at(0);
-    for(i = 1; i < this->num_trips; i++){
-        //get smallest trip length
-        if(min_trip_length > this->trip_length.at(i)) min_trip_length = this->trip_length.at(i);
-    }
+    int i, j, k, countzone;
+    float max_length = 0, sum_zone = 0, minor_diameter = 0, dist_hotels;
 
+    for(i = 0; i < this->num_trips; i++){
+        if(max_length < this->trip_length.at(i)) max_length = this->trip_length.at(i);
+    }
+    max_length /= this->num_trips;
+    max_length /= 2;
     hotel_pair_zone.resize(this->num_hotels);
     for(i = 0; i < this->num_hotels; i++){
         hotel_pair_zone.at(i).resize(this->num_hotels, 0);
         for(j = 0; j < this->num_hotels; j++){
-            if(this->Point_distance.at(i).at(j) > min_trip_length) max_length = this->Point_distance.at(i).at(j);
-            else max_length = min_trip_length;
-            sum_zone = 0;
+            if(this->Point_distance.at(i).at(j) > max_length) max_length = this->Point_distance.at(i).at(j);
+            countzone = 0;
             for(k = 0; k < this->num_vertices; k++){
                 if(this->Point_distance.at(i).at(this->num_hotels + k) + this->Point_distance.at(this->num_hotels + k).at(j) < max_length){
                     sum_zone += this->poi.at(k).Getscore();
+                    countzone++;
                 }
             }
             hotel_pair_zone.at(i).at(j) = sum_zone;
@@ -389,29 +378,33 @@ void Instance::Calculate_hotel_zone(){
     }
 
     //print
-//    std::cout << " ------------------------------ ZONE ----------------------------\n";
-//    std::cout.precision(0);
-//    for(i = 0; i < this->num_hotels; i++){
-//        for(j = 0; j < this->num_hotels; j++){
-//            std::cout << hotel_pair_zone.at(i).at(j) << "/" << countzone.at(i).at(j) << " ";
-//        }
-//        std::cout << std::endl << std::endl;
-//    }
+    for(i = 0; i < this->num_hotels; i++){
+        for(j = 0; j < this->num_hotels; j++){
+            std::cout << hotel_pair_zone.at(i).at(j) << "/" << countzone << "\t";
+        }
+        std::cout << std::endl;
+    }
 }
 
-std::vector<int> Instance::Best_hotel_sequence(){
+std::vector<int> Instance::Best_hotel_sequence(float alpha){
     int i, k, j, best_hotel, best_previous_hotel, n_trip = 0;
     float best_hotel_score = 0;
+    std::vector< std::vector<short> > count_pairs;
     std::vector<int> hotel_sequence(this->num_trips + 1, 0);
     std::vector< std::vector<float> > hpz = this->hotel_pair_zone;
+
+    count_pairs.resize(this->num_hotels);
+    for(i = 0; i < this->num_hotels; i++){
+        count_pairs.at(i).resize(this->num_hotels, 0);
+    }
 
     //Set start for this tour
     hotel_sequence.front() = 0;
     best_previous_hotel = 0;
 
     //Select hotel fot each trip
+    std::cout.precision(0);
     for(n_trip = 0; n_trip < this->num_trips - 1; n_trip++){
-        /**
         std::cout << "------------- Viable -------------" << std::endl;
         for(std::vector< std::vector<float> >::iterator itsh = viable_hotel_pair.at(n_trip).begin(); itsh != viable_hotel_pair.at(n_trip).end(); itsh++){
             for(std::vector<float>::iterator iteh = itsh->begin(); iteh != itsh->end(); iteh++){
@@ -424,12 +417,11 @@ std::vector<int> Instance::Best_hotel_sequence(){
         std::cout << "------------- HPZ -------------" << std::endl;
         for(std::vector< std::vector<float> >::iterator itsh = hpz.begin(); itsh != hpz.end(); itsh++){
             for(std::vector<float>::iterator iteh = itsh->begin(); iteh != itsh->end(); iteh++){
-                std::cout << (*iteh) << " ";
+                std::cout << (*iteh) << "\t";
             }
             std::cout << std::endl;
         }
         std::cout << std::endl;
-        */
         //select best end hotel for each trip until last trip
         best_hotel_score = 0;
         for(j = 0; j < this->num_hotels; j++){
@@ -439,52 +431,18 @@ std::vector<int> Instance::Best_hotel_sequence(){
                 best_hotel = j;
             }
         }
+
         //set best end hotel
+        count_pairs.at(best_previous_hotel).at(best_hotel)++;
         hpz.at(best_previous_hotel).at(best_hotel) -= best_hotel_score;
         hotel_sequence.at(n_trip + 1) = best_previous_hotel = best_hotel;
-    }
-    //Set end hotel for this tour
-    hotel_sequence.back() = 1;
-    return hotel_sequence;
-}
 
-std::vector<int> Instance::Random_hotel_sequence(){
-    int i, k, j, best_hotel, best_previous_hotel, n_trip = 0;
-    float sum_roulette = 0, num_roulette = 0;
-    std::vector<int> hotel_sequence(this->num_trips + 1, 0);
-    std::vector< std::vector<float> > hpz = this->hotel_pair_zone;
-
-    //Set start for this tour
-    hotel_sequence.front() = 0;
-    best_previous_hotel = 0;
-
-    //Select hotel fot each trip
-    for(n_trip = 0; n_trip < this->num_trips - 1; n_trip++){
-        sum_roulette = 0;
-        //get roulette total sum
-        for(j = 0; j < this->num_hotels; j++){
-            if(this->viable_hotel_pair.at(n_trip).at(best_previous_hotel).at(j) > 0)
-                sum_roulette += std::min(this->viable_hotel_pair.at(n_trip).at(best_previous_hotel).at(j), hpz.at(best_previous_hotel).at(j));
-        }
-        num_roulette = (rand() % (int)sum_roulette);
-        sum_roulette = 0;
-        //Get selected hotel
-        for(j = 0; j < this->num_hotels; j++){
-            if(this->viable_hotel_pair.at(n_trip).at(best_previous_hotel).at(j) > 0){
-                float calc_hotel_pair = std::min(this->viable_hotel_pair.at(n_trip).at(best_previous_hotel).at(j), hpz.at(best_previous_hotel).at(j));
-                sum_roulette += calc_hotel_pair;
-                if(sum_roulette > num_roulette){
-                    //set best end hotel
-                    hpz.at(best_previous_hotel).at(j) -= calc_hotel_pair;
-                    hotel_sequence.at(n_trip + 1) = best_previous_hotel = j;
-                    break;
-                }
-            }
-        }
     }
 
     //Set end hotel for this tour
     hotel_sequence.back() = 1;
+    count_pairs.at(best_previous_hotel).at(1)++;
+
     return hotel_sequence;
 }
 

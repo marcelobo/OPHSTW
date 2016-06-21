@@ -26,7 +26,7 @@
 	<dirent.h>
 	<string.h>
 
-1464085260 source:c:\users\marce\desktop\ophs\codigo\main.cpp
+1465920959 source:c:\users\marce\desktop\ophs\codigo\main.cpp
 	<iostream>
 	<fstream>
 	<string>
@@ -44,7 +44,7 @@
 	<string>
 	<vector>
 
-1464075829 c:\users\marce\desktop\ophs\codigo\include\instance.h
+1466476975 c:\users\marce\desktop\ophs\codigo\include\instance.h
 	<string>
 	<vector>
 
@@ -59,13 +59,15 @@
 1457569374 c:\users\marce\desktop\ophs\codigo\include\trip_point.h
 	<point.h>
 
-1464092584 source:c:\users\marce\desktop\ophs\codigo\src\instance.cpp
+1465904005 source:c:\users\marce\desktop\ophs\codigo\src\instance.cpp
 	"Instance.h"
 	<iostream>
 	<fstream>
 	<sstream>
 	<algorithm>
+	<cstdlib>
 	<ctime>
+	<cmath>
 	"Point.h"
 	"Tour.h"
 
@@ -88,11 +90,12 @@
 1457569380 source:c:\users\marce\desktop\ophs\codigo\src\trip_point.cpp
 	"Trip_point.h"
 
-1464082113 c:\users\marce\desktop\ophs\codigo\include\tour.h
+1465898214 c:\users\marce\desktop\ophs\codigo\include\tour.h
 	<Trip_point.h>
 	<vector>
+	<utility>
 
-1464071803 source:c:\users\marce\desktop\ophs\codigo\src\tour.cpp
+1465898616 source:c:\users\marce\desktop\ophs\codigo\src\tour.cpp
 	"Tour.h"
 	"Instance.h"
 	<cstdlib>
@@ -102,6 +105,8 @@
 	<vector>
 	<fstream>
 	<sstream>
+	<utility>
+	<algorithm>
 
 1459335455 source:h:\desktop\ophs\codigo\src\instance.cpp
 	"Instance.h"
@@ -160,12 +165,15 @@
 	<Instance.h>
 	<Trip_point.h>
 
-1464082518 c:\users\marce\desktop\ophs\codigo\include\hotel_sequences.h
+1465776070 c:\users\marce\desktop\ophs\codigo\include\hotel_sequences.h
 	<vector>
+	<Tour.h>
 
-1464088482 source:c:\users\marce\desktop\ophs\codigo\src\hotel_sequences.cpp
+1465920442 source:c:\users\marce\desktop\ophs\codigo\src\hotel_sequences.cpp
 	"Hotel_Sequences.h"
 	"Instance.h"
 	"Tour.h"
 	<iostream>
+	<algorithm>
+	<cstdlib>
 
